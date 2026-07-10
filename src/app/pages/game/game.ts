@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { Box } from '../../model/box.model';
 
 @Component({
@@ -14,6 +14,18 @@ export class Game implements OnInit {
   board = signal<Box[][]>([]);
   isGameStarted = signal(false);
   isGameOver = signal(false);
+
+  victory = computed( () => {
+    for (let x = 0; x < this.rows(); x++) {
+      for (let y = 0; y < this.columns(); y++) {
+        const currentBox = this.board()[x][y];
+        if ( !currentBox.hasMine &&  !currentBox.isRevealed) {
+          return false;
+        }
+      }
+    }
+    return true;
+  });
 
   ngOnInit() {
     this.buildBoard();
@@ -40,7 +52,7 @@ export class Game implements OnInit {
   }
 
   revealBox(rowIndex: number, columnIndex: number) {
-    if (this.isGameOver()) {
+    if (this.isGameOver() || this.victory()) {
       return;
     }
     if (!this.isGameStarted()) {
