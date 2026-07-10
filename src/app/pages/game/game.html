@@ -4,16 +4,22 @@
       @for (box of row; track (box.row + '-' + box.column)) {
         <button
           (click)="revealBox(box.row, box.column)"
+          (contextmenu)="flagBox($event, box.row, box.column)"
           class="w-10 h-10 font-bold text-xs flex items-center justify-center rounded transition-all duration-100 select-none
           {{ box.isRevealed
              ? 'bg-base-300 text-base-content/50 border border-base-200 cursor-default'
              : 'btn btn-square btn-neutral min-h-0 h-10 w-10 hover:scale-95'
           }}">
-
           @if (box.isRevealed) {
-            {{ box.minesAround }}
+            @if (box.hasMine) {
+              x
+            } @else if (box.minesAround > 0) {
+              {{ box.minesAround }}
+            }
           } @else {
-            ·
+            @if (box.isFlagged) {
+              +
+            }
           }
         </button>
       }

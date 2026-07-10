@@ -3,6 +3,6 @@ export interface Box {
   column: number;
   hasMine: boolean;
   isRevealed: boolean;
-  isMarked: boolean;
+  isFlagged: boolean;
   minesAround: number;
 }
