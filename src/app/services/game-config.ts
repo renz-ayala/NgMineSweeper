@@ -85,7 +85,7 @@ export class GameConfigService {
       return Math.floor(lossScore);
     }
     const targetTime = mines * 3;
-    let timeBonus = 0;
+    let timeBonus;
     if (time < targetTime) {
       const secondsSaved = targetTime - time;
       timeBonus = Math.floor(secondsSaved * 15 * difficultyMultiplier);
