@@ -5,24 +5,18 @@ import { Alert } from '../model/alert.model';
   providedIn: 'root',
 })
 export class AlertService {
-  defaultState: Alert = {
-    show: false,
-    message: '',
-    type: 'info',
-  };
-  private state = signal(this.defaultState);
+  defaultAlert = signal<Alert>({ show: false, message: '', type: 'info' });
+
+  private state = signal(this.defaultAlert());
   alertState = this.state.asReadonly();
 
   show(message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') {
-    const newAlert: Alert = {
-      show: true,
-      message,
-      type
-    };
+    const newAlert: Alert = { show: true, message, type, };
     this.state.set(newAlert);
+
     setTimeout(() => {
       this.close();
-    }, 4000);
+    }, 10000);
   }
 
   close() {

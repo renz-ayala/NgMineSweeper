@@ -1,0 +1,11 @@
+@if (alert().show) {
+  <div class="toast toast-top toast-end z-50 pointer-events-auto">
+    <div class="alert shadow-lg flex items-center gap-2 border"
+         [class.alert-success]="alert().type === 'success'"
+         [class.alert-error]="alert().type === 'error'"
+         [class.alert-info]="alert().type === 'info'">
+      <span>{{ alert().message }}</span>
+      <button class="btn btn-ghost btn-xs btn-circle" (click)="alertService.close()">✕</button>
+    </div>
+  </div>
+}
