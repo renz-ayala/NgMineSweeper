@@ -4,28 +4,94 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class GameConfigService {
-  config = signal<Difficulty>({
-    level: 'Easy',
-    rows: 10,
-    columns: 8,
-    mines: 7,
-  });
+  difficulties: Difficulty[] = [
+    { level: 'Super Easy', rows: 10, columns: 8, mines: 7 },
+    { level: 'Easy', rows: 10, columns: 10, mines: 15 },
+    { level: 'Medium', rows: 16, columns: 16, mines: 40 },
+    { level: 'Hard', rows: 20, columns: 30, mines: 99 },
+    { level: 'Random', rows: 0, columns: 0, mines: 0 },
+  ];
+
+  lossMessages: string[] = [
+    'KABOOM! Así se sintió Chernobyl...',
+    'Boom!! Viviste lo que vivió un soldado gringo en Vietnam.',
+    '¡BOOM! Acabas de recrear Hiroshima en un tablero.',
+    'Te fue peor que a la armada argentina en las Malvinas.',
+    'KABOOM. Pidele ayuda por daños colaterales a la ONU.',
+    'UY como las gemelas.',
+    'Gualá, Vitamina Z para los cuervos.',
+  ];
+
+  winMessages: string[] = [
+    'Respiraste la nunca de la muerte.',
+    'Counter terrorist win.',
+    'Área despejada. Ya estás listo para la 3ra guerra mundial.',
+    '«MISSION PASSED» No hay efectos de sonido.',
+  ];
+
+  config = signal<Difficulty>(this.difficulties[0]);
 
   setConfig(difficulty: Difficulty): void {
     if (difficulty.level === 'Random') {
-      const randomDifficulty = this.generateRandomConfig();
-      this.config.set(randomDifficulty);
+      this.setRandomConfig();
     } else {
       this.config.set(difficulty);
     }
   }
 
+  setRandomConfig(): void {
+    const randomDifficulty = this.generateRandomConfig();
+    this.config.set(randomDifficulty);
+  }
+
   generateRandomConfig(): Difficulty {
     const rows = Math.floor(Math.random() * (30 - 10 + 1)) + 8;
-    const columns = Math.floor(Math.random() * (20 - 8 + 1)) + 8;
+    const columns = Math.floor(Math.random() * (30 - 8 + 1)) + 8;
     const totalCells = rows * columns;
     const density = (Math.random() * (18 - 13) + 13) / 100;
     const mines = Math.floor(totalCells * density);
     return { level: 'Random', rows, columns, mines };
+  }
+
+  getNumberColor(minesAround: number): string {
+    const colors: Record<number, string> = {
+      1: 'text-info font-extrabold',
+      2: 'text-success font-extrabold',
+      3: 'text-error font-black text-sm',
+      4: 'text-secondary font-black text-sm',
+      5: 'text-neutral-content bg-neutral p-0.5 rounded animate-pulse',
+      6: 'text-error bg-error/20 p-0.5 rounded font-black animate-bounce',
+      7: 'text-error bg-error/30 p-0.5 rounded font-black uppercase tracking-tighter',
+      8: 'text-black bg-red-600 px-1 rounded font-black text-center',
+    };
+    return colors[minesAround] || 'text-base-content';
+  }
+
+  getRandomMessage(isGameOver: boolean): string {
+    const list = isGameOver ? this.lossMessages : this.winMessages;
+    const index = Math.floor(Math.random() * list.length);
+    return list[index];
+  }
+
+  calcScore(rows: number, cols: number, mines: number, time: number, isLoss: boolean) {
+    const boxQuantity = rows * cols;
+    if (boxQuantity === 0 || mines === 0) return 0;
+    const density = mines / boxQuantity;
+    const difficultyMultiplier = 1 + (density * 3.5);
+    const winBaseScore = Math.floor(mines * 250 * difficultyMultiplier);
+    if (isLoss) {
+      const survivalBonus = Math.min(300, time * 5);
+      const lossScore = Math.floor(winBaseScore * 0.02) + survivalBonus;
+      return Math.floor(lossScore);
+    }
+    const targetTime = mines * 3;
+    let timeBonus = 0;
+    if (time < targetTime) {
+      const secondsSaved = targetTime - time;
+      timeBonus = Math.floor(secondsSaved * 15 * difficultyMultiplier);
+    } else {
+      timeBonus = mines;
+    }
+    return winBaseScore + timeBonus;
   }
 }

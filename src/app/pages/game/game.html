@@ -32,7 +32,7 @@
             @if (box.hasMine) {
               🧨💥
             } @else if (box.minesAround > 0) {
-              <span class="{{ getNumberColor(box.minesAround) }}">
+              <span class="{{ gameConfigService.getNumberColor(box.minesAround) }}">
                 {{ box.minesAround }}
               </span>
             }
