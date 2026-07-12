@@ -252,13 +252,16 @@ export class Game implements OnInit, OnDestroy {
 
   resetGame(event: MouseEvent) {
     event.preventDefault();
+    if (!this.isGameStarted()) {
+      return;
+    }
     this.timer.set(0);
     this.isGameOver.set(false);
     this.isGameStarted.set(false);
-    if (this.level() === 'Random') {
-      this.gameConfigService.setRandomConfig();
-      this.initGameConfig();
-    }
+    // if (this.level() === 'Random') {
+    //   this.gameConfigService.setRandomConfig();
+    //   this.initGameConfig();
+    // }
     this.buildBoard();
   }
 

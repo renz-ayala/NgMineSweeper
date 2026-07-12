@@ -5,10 +5,11 @@ import { Injectable, signal } from '@angular/core';
 })
 export class GameConfigService {
   difficulties: Difficulty[] = [
-    { level: 'Super Easy', rows: 10, columns: 8, mines: 7 },
+    { level: 'Super Easy', rows: 9, columns: 9, mines: 10 },
     { level: 'Easy', rows: 10, columns: 10, mines: 15 },
     { level: 'Medium', rows: 16, columns: 16, mines: 40 },
-    { level: 'Hard', rows: 20, columns: 30, mines: 99 },
+    { level: 'Hard', rows: 16, columns: 30, mines: 99 },
+    { level: 'Tryhard', rows: 20, columns: 24, mines: 168 },
     { level: 'Random', rows: 0, columns: 0, mines: 0 },
   ];
 
@@ -16,7 +17,7 @@ export class GameConfigService {
     'KABOOM! Así se sintió Chernobyl...',
     'Boom!! Viviste lo que vivió un soldado gringo en Vietnam.',
     '¡BOOM! Acabas de recrear Hiroshima en un tablero.',
-    'Te fue peor que a la armada argentina en las Malvinas.',
+    'Como argentino en las Malvinas.',
     'KABOOM. Pidele ayuda por daños colaterales a la ONU.',
     'UY como las gemelas.',
     'Gualá, Vitamina Z para los cuervos.',
@@ -26,7 +27,7 @@ export class GameConfigService {
     'Respiraste la nunca de la muerte.',
     'Counter terrorist win.',
     'Área despejada. Ya estás listo para la 3ra guerra mundial.',
-    '«MISSION PASSED» No hay efectos de sonido.',
+    '«MISSION PASSED» *No hay efectos de sonido*.',
   ];
 
   config = signal<Difficulty>(this.difficulties[0]);
@@ -45,11 +46,11 @@ export class GameConfigService {
   }
 
   generateRandomConfig(): Difficulty {
-    const rows = Math.floor(Math.random() * (30 - 10 + 1)) + 8;
-    const columns = Math.floor(Math.random() * (30 - 8 + 1)) + 8;
-    const totalCells = rows * columns;
-    const density = (Math.random() * (18 - 13) + 13) / 100;
-    const mines = Math.floor(totalCells * density);
+    const rows = Math.floor(Math.random() * (30 - 9 + 1)) + 9;
+    const columns = Math.floor(Math.random() * (30 - 9 + 1)) + 9;
+    const totalBox = rows * columns;
+    const density = (Math.random() * (38 - 10) + 10) / 100;
+    const mines = Math.max(1, Math.floor(totalBox * density));
     return { level: 'Random', rows, columns, mines };
   }
 
@@ -59,8 +60,8 @@ export class GameConfigService {
       2: 'text-success font-extrabold',
       3: 'text-error font-black text-sm',
       4: 'text-secondary font-black text-sm',
-      5: 'text-neutral-content bg-neutral p-0.5 rounded animate-pulse',
-      6: 'text-error bg-error/20 p-0.5 rounded font-black animate-bounce',
+      5: 'text-neutral-content bg-neutral p-0.5 rounded',
+      6: 'text-error bg-error/20 p-0.5 rounded font-black',
       7: 'text-error bg-error/30 p-0.5 rounded font-black uppercase tracking-tighter',
       8: 'text-black bg-red-600 px-1 rounded font-black text-center',
     };

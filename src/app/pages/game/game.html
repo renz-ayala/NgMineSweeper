@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-1 bg-base-100 p-4 rounded-2xl shadow-md border border-base-300 w-fit mx-auto">
   <div class="flex items-center justify-between w-full px-1 py-2 font-mono font-bold text-xl select-none mb-2">
     <div class="text-error bg-base-300/50 px-3 py-1 rounded border border-base-200 min-w-16.25 text-center">
-      💣 {{ minesLeft() | counter }}
+      {{ minesLeft() | counter }}
     </div>
     <label class="swap swap-flip text-3xl" (click)="resetGame($event)">
       <input type="checkbox" [checked]="isGameOver()"/>
@@ -9,7 +9,7 @@
       <div class="swap-off">😇</div>
     </label>
     <div class="text-warning bg-base-300/50 px-3 py-1 rounded border border-base-200 min-w-16.25 text-center">
-      ⏱️ {{ timer() | counter }}
+      ⏱ {{ timer() | counter }}
     </div>
   </div>
 
@@ -40,11 +40,21 @@
             @if (box.isFlagged) {
               <div class="flex items-start h-6 select-none">
                 <div class="w-0.75 h-full bg-amber-700 rounded-t shadow-sm"></div>
-                <img
-                  src="https://flagcdn.com/w40/jp.png"
-                  alt="Kamikaze"
-                  class="w-5 h-3.5 object-cover rounded-sm shadow border border-black/10 -ml-px mt-px"
-                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  class="w-5 h-3.5 object-cover rounded-sm shadow border border-black/10 -ml-px mt-px bg-white p-0.5"
+                >
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2.5"
+                    class="text-neutral"
+                    d="M5 12h14m0 0v-5m0 5v5M5 12V7m0 5v5M5 7h5m9 10h-5"
+                  />
+                </svg>
               </div>
             }
           }

@@ -7,7 +7,7 @@ import { Alert } from '../model/alert.model';
 export class AlertService {
   defaultAlert = signal<Alert>({ show: false, message: '', type: 'info' });
 
-  private state = signal(this.defaultAlert());
+  private state = signal<Alert>(this.defaultAlert());
   alertState = this.state.asReadonly();
 
   show(message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') {
