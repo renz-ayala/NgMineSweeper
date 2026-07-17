@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { Alert } from './pages/alert/alert';
+import { Alert } from './shared/components/alert/alert';
 
 @Component({
   selector: 'app-root',

@@ -1,8 +1,8 @@
 import { Component, computed, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { Box } from '../../model/box.model';
-import { AlertService } from '../../services/alert-service';
-import { CounterPipe } from '../../pipes/counter-pipe';
-import { GameConfigService } from '../../services/game-config';
+import { Box } from '../../../core/models/box.model';
+import { AlertService } from '../../../core/services/alert-service';
+import { CounterPipe } from '../../../shared/pipes/counter-pipe';
+import { GameConfigService } from '../../../core/services/game-config';
 
 @Component({
   selector: 'app-game',

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { Menu } from './pages/menu/menu';
-import { Game } from './pages/game/game';
+import { Menu } from './features/pages/menu/menu';
+import { Game } from './features/pages/game/game';
 
 export const routes: Routes = [
   {

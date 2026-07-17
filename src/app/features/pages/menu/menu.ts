@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { GameConfigService } from '../../services/game-config';
+import { GameConfigService } from '../../../core/services/game-config';
 
 @Component({
   selector: 'app-menu',
