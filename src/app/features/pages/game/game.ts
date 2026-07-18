@@ -1,8 +1,19 @@
-import { Component, computed, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { Box } from '../../../core/models/box.model';
 import { AlertService } from '../../../core/services/alert-service';
 import { CounterPipe } from '../../../shared/pipes/counter-pipe';
 import { GameConfigService } from '../../../core/services/game-config';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -12,8 +23,11 @@ import { GameConfigService } from '../../../core/services/game-config';
 export class Game implements OnInit, OnDestroy {
   alertService = inject(AlertService);
   gameConfigService = inject(GameConfigService);
+  router = inject(Router);
 
   private timerId: ReturnType<typeof setInterval> | null = null;
+
+  alertView = viewChild<ElementRef>('redirect');
 
   rows = signal(10);
   columns = signal(10);
@@ -59,14 +73,18 @@ export class Game implements OnInit, OnDestroy {
         this.alertService.show(winMessage, 'success');
         this.revealNumbers();
         this.flagAllMines();
+        this.redirect();
       }
     });
+
     effect(() => {
       if (this.isGameOver()) {
         const lossMessage = this.getEndGameMessage();
         this.alertService.show(lossMessage, 'error');
+        this.redirect();
       }
     });
+
     effect(() => {
       if (this.isGameStarted() && !this.isGameOver() && !this.victory()) {
         this.timerId = setInterval(() => {
@@ -255,13 +273,19 @@ export class Game implements OnInit, OnDestroy {
     if (!this.isGameStarted()) {
       return;
     }
+    this.resetState();
+  }
+
+  updateRandomBoard(): void {
+    this.gameConfigService.setRandomConfig();
+    this.initGameConfig();
+    this.resetState();
+  }
+
+  resetState(): void {
     this.timer.set(0);
     this.isGameOver.set(false);
     this.isGameStarted.set(false);
-    // if (this.level() === 'Random') {
-    //   this.gameConfigService.setRandomConfig();
-    //   this.initGameConfig();
-    // }
     this.buildBoard();
   }
 
@@ -269,6 +293,15 @@ export class Game implements OnInit, OnDestroy {
     const message = this.gameConfigService.getRandomMessage(this.isGameOver());
     const score = this.gameConfigService.calcScore(this.rows(), this.columns(), this.mines(), this.timer(), this.isGameOver());
     return `${message}. Tu puntaje fue de ${score}`;
+  }
+
+  redirect(){
+    setTimeout(() => {
+      this.alertView()?.nativeElement?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }, 50);
   }
 }
 

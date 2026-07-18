@@ -1,32 +1,50 @@
-<div class="flex flex-col gap-1 bg-base-100 p-4 rounded-2xl shadow-md border border-base-300 w-fit mx-auto">
+<div class="flex flex-col gap-1 bg-base-100 p-4 rounded-2xl shadow-md border border-base-300 w-fit mx-auto max-w-full overflow-x-auto">
   <div class="flex items-center justify-between w-full px-1 py-2 font-mono font-bold text-xl select-none mb-2">
     <div class="text-error bg-base-300/50 px-3 py-1 rounded border border-base-200 min-w-16.25 text-center">
       {{ minesLeft() | counter }}
     </div>
-    <label class="swap swap-flip text-3xl" (click)="resetGame($event)">
-      <input type="checkbox" [checked]="isGameOver()"/>
-      <div class="swap-on">😈</div>
-      <div class="swap-off">😇</div>
-    </label>
+
+    <button class="btn btn-ghost btn-sm btn-square text-base-content/70 hover:bg-base-300" (click)="router.navigate([''])">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+      </svg>
+    </button>
+
+    <div #redirect>
+      <label class="swap swap-flip text-3xl" (click)="resetGame($event)">
+        <input type="checkbox" [checked]="isGameOver()"/>
+        <div class="swap-on">😈</div>
+        <div class="swap-off">😇</div>
+      </label>
+    </div>
+
+    @if (level() === 'Random') {
+      <button class="btn btn-ghost btn-sm btn-square text-base-content/70 hover:bg-base-300" (click)="updateRandomBoard()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+        </svg>
+      </button>
+    }
+
     <div class="text-warning bg-base-300/50 px-3 py-1 rounded border border-base-200 min-w-16.25 text-center">
       ⏱ {{ timer() | counter }}
     </div>
   </div>
 
   @for (row of board(); track $index) {
-    <div class="flex gap-1">
+    <div class="flex gap-1 w-max">
       @for (box of row; track (box.row + '-' + box.column)) {
         <button
           (click)="revealBox(box.row, box.column)"
           (contextmenu)="flagBox($event, box.row, box.column)"
-          class="w-10 h-10 font-bold text-xs flex items-center justify-center rounded transition-all duration-100 select-none
+          class="flex-shrink-0 font-bold text-xs flex items-center justify-center rounded transition-all duration-100 select-none w-6 h-6 sm:w-6 sm:h-8 md:w-10 md:h-10
           {{ box.isRevealed
              ? box.hasMine
                ? 'bg-red-600/20 text-red-500 border border-red-500/40 cursor-default'
                : 'bg-base-300 text-base-content/70 border border-base-200 cursor-default'
              : box.isFlagged
-               ? 'bg-blue-500/10 border border-blue-500/30 btn btn-square min-h-0 h-10 w-10 hover:scale-95'
-               : 'btn btn-square btn-neutral min-h-0 h-10 w-10 hover:scale-95'
+               ? 'bg-blue-500/10 border border-blue-500/30 btn btn-square min-h-0 !h-inherit !w-inherit hover:scale-95'
+               : 'btn btn-square btn-neutral min-h-0 !h-inherit !w-inherit hover:scale-95'
           }}">
           @if (box.isRevealed) {
             @if (box.hasMine) {
@@ -38,7 +56,7 @@
             }
           } @else {
             @if (box.isFlagged) {
-              <div class="flex items-start h-6 select-none">
+              <div class="flex items-start h-6 select-none scale-75 sm:scale-100">
                 <div class="w-0.75 h-full bg-amber-700 rounded-t shadow-sm"></div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
