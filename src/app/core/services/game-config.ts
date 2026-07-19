@@ -14,21 +14,12 @@ export class GameConfigService {
   ];
 
   lossMessages: string[] = [
-    '¡Fin del juego! Has detonado una mina.',
-    'Intento fallido. El tablero ha explotado, ¡inténtalo de nuevo!',
-    'Operación cancelada. Una mina ha sido activada en el terreno.',
-    'Juego terminado. Has caído en una zona inestable.',
-    '¡BOOM! Fin de la partida. Suerte para la próxima.',
-    'Desactivación fallida. El área no pudo ser despejada a tiempo.',
-    'Partida concluida. Tu racha ha terminado en esta casilla.'
-  ];
+    '¡Fin del juego!',
+    'Mala suerte'  ];
 
   winMessages: string[] = [
-    '¡Felicidades! Has despejado el tablero con éxito.',
-    '¡Victoria! Todas las minas han sido localizadas de forma segura.',
-    'Misión cumplida. Terreno asegurado y libre de peligros.',
-    '¡Excelente trabajo! Has completado el juego sin errores.',
-    '¡Estrategia perfecta! Has ganado la partida.'
+    '¡Victoria!',
+    '¡Excelente trabajo!',
   ];
 
   config = signal<Difficulty>(this.difficulties[0]);
