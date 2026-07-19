@@ -14,20 +14,21 @@ export class GameConfigService {
   ];
 
   lossMessages: string[] = [
-    'KABOOM! Así se sintió Chernobyl...',
-    'Boom!! Viviste lo que vivió un soldado gringo en Vietnam.',
-    '¡BOOM! Acabas de recrear Hiroshima en un tablero.',
-    'Como argentino en las Malvinas.',
-    'KABOOM. Pidele ayuda por daños colaterales a la ONU.',
-    'UY como las gemelas.',
-    'Gualá, Vitamina Z para los cuervos.',
+    '¡Fin del juego! Has detonado una mina.',
+    'Intento fallido. El tablero ha explotado, ¡inténtalo de nuevo!',
+    'Operación cancelada. Una mina ha sido activada en el terreno.',
+    'Juego terminado. Has caído en una zona inestable.',
+    '¡BOOM! Fin de la partida. Suerte para la próxima.',
+    'Desactivación fallida. El área no pudo ser despejada a tiempo.',
+    'Partida concluida. Tu racha ha terminado en esta casilla.'
   ];
 
   winMessages: string[] = [
-    'Respiraste la nunca de la muerte.',
-    'Counter terrorist win.',
-    'Área despejada. Ya estás listo para la 3ra guerra mundial.',
-    '«MISSION PASSED» *No hay efectos de sonido*.',
+    '¡Felicidades! Has despejado el tablero con éxito.',
+    '¡Victoria! Todas las minas han sido localizadas de forma segura.',
+    'Misión cumplida. Terreno asegurado y libre de peligros.',
+    '¡Excelente trabajo! Has completado el juego sin errores.',
+    '¡Estrategia perfecta! Has ganado la partida.'
   ];
 
   config = signal<Difficulty>(this.difficulties[0]);
