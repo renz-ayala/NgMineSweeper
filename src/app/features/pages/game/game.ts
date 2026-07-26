@@ -277,7 +277,7 @@ export class Game implements OnInit, OnDestroy {
   }
 
   updateRandomBoard(): void {
-    this.gameConfigService.setRandomConfig();
+    this.gameConfigService.setRandomConfig(this.level());
     this.initGameConfig();
     this.resetState();
   }

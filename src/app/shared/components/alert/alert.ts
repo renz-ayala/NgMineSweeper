@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { AlertService } from '../../../core/services/alert-service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-alert',
-  imports: [],
+  imports: [NgClass],
   templateUrl: './alert.html',
 })
 export class Alert {

@@ -1,11 +1,39 @@
 @if (alert().show) {
-  <div class="toast toast-top justify-items-center md:toast-end sm:right-4 top-2 sm:top-4 left-2 sm:left-auto right-2 w-auto max-w-[calc(100vw-1rem)] z-50 pointer-events-auto">
-    <div class="alert shadow-lg flex items-center justify-between gap-3 border w-full sm:w-auto"
-         [class.alert-success]="alert().type === 'success'"
-         [class.alert-error]="alert().type === 'error'"
-         [class.alert-info]="alert().type === 'info'">
-      <span class="text-sm sm:text-base break-words max-w-[calc(100vw-5rem)]">{{ alert().message }}</span>
-      <button class="btn btn-ghost btn-xs btn-circle shrink-0" (click)="alertService.close()">✕</button>
+  <div class="fixed top-4 inset-x-0 mx-auto z-50 w-full max-w-sm px-4 pointer-events-auto transition-all duration-300 ease-out">
+    <div
+      class="flex items-center gap-3 px-4 py-3 rounded-lg shadow-xl border backdrop-blur-md transition-all duration-300 animate-in fade-in slide-in-from-top-4"
+      [ngClass]="{
+        'bg-emerald-950/90 border-emerald-500/30 text-emerald-200': alert().type === 'success',
+        'bg-rose-950/90 border-rose-500/30 text-rose-200': alert().type === 'error'
+      }"
+    >
+      @if (alert().type === 'success') {
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      } @else {
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      }
+
+      <span class="text-sm font-medium leading-tight flex-1">
+        {{ alert().message }}
+      </span>
+
+      <button
+        type="button"
+        class="p-1 rounded-md opacity-60 hover:opacity-100 transition-opacity shrink-0 hover:bg-white/10"
+        (click)="alertService.close()"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
     </div>
   </div>
 }
