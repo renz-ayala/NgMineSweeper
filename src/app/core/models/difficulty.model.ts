@@ -3,4 +3,5 @@ interface Difficulty {
   rows: number;
   columns: number;
   mines: number;
+  description?: string;
 }
