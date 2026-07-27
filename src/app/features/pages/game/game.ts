@@ -14,10 +14,11 @@ import { CounterPipe } from '../../../shared/pipes/counter-pipe';
 import { GameConfigService } from '../../../core/services/game-config';
 import { Router } from '@angular/router';
 import { TimePipe } from '../../../shared/pipes/time-pipe';
+import { Alert } from '../../../shared/components/alert/alert';
 
 @Component({
   selector: 'app-game',
-  imports: [CounterPipe],
+  imports: [CounterPipe, Alert],
   providers: [TimePipe],
   templateUrl: './game.html',
 })
@@ -79,8 +80,8 @@ export class Game implements OnInit {
         const wasBetterTime = this.gameConfigService.assignBestTime(this.level(), this.timer());
 
         if (wasBetterTime) {
-          const formattedTimer = this.timerPipe.transform(this.timer())
-          this.alertService.show('', 'achievement', `¡Nuevo récord! ${ formattedTimer }`);
+          const formattedTimer = this.timerPipe.transform(this.timer());
+          this.alertService.show('', 'achievement', `¡Nuevo récord! ${formattedTimer}`);
         }
       }
     });
@@ -217,6 +218,8 @@ export class Game implements OnInit {
     }
 
     box.isRevealed = true;
+    box.isFlagged = false;
+
     if (box.minesAround === 0) {
       for (let x = -1; x <= 1; x++) {
         for (let y = -1; y <= 1; y++) {
@@ -263,9 +266,14 @@ export class Game implements OnInit {
       return;
     }
 
+    if (this.minesLeft() <= 0) {
+      return;
+    }
+
     if (this.isGameOver() || this.victory() || this.board()[rowIndex][columnIndex].isRevealed) {
       return;
     }
+
     this.board.update((updatedBoard) => {
       const box = updatedBoard[rowIndex][columnIndex];
       box.isFlagged = !box.isFlagged;
