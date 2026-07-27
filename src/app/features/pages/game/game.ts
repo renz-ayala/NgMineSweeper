@@ -4,7 +4,6 @@ import {
   effect,
   ElementRef,
   inject,
-  OnDestroy,
   OnInit,
   signal,
   viewChild,
@@ -14,26 +13,29 @@ import { AlertService } from '../../../core/services/alert-service';
 import { CounterPipe } from '../../../shared/pipes/counter-pipe';
 import { GameConfigService } from '../../../core/services/game-config';
 import { Router } from '@angular/router';
+import { TimePipe } from '../../../shared/pipes/time-pipe';
 
 @Component({
   selector: 'app-game',
   imports: [CounterPipe],
+  providers: [TimePipe],
   templateUrl: './game.html',
 })
-export class Game implements OnInit, OnDestroy {
+export class Game implements OnInit {
   alertService = inject(AlertService);
   gameConfigService = inject(GameConfigService);
   router = inject(Router);
-
-  private timerId: ReturnType<typeof setInterval> | null = null;
+  timerPipe = inject(TimePipe);
 
   alertView = viewChild<ElementRef>('redirect');
 
-  rows = signal(10);
-  columns = signal(10);
-  mines = signal(15);
-  level = signal('Easy');
+  rows = signal<number>(undefined as unknown as number);
+  columns = signal<number>(undefined as unknown as number);
+  mines = signal<number>(undefined as unknown as number);
+  level = signal<string>(undefined as unknown as string);
+
   board = signal<Box[][]>([]);
+
   isGameStarted = signal(false);
   isGameOver = signal(false);
   timer = signal(0);
@@ -74,6 +76,12 @@ export class Game implements OnInit, OnDestroy {
         this.revealNumbers();
         this.flagAllMines();
         this.redirect();
+        const wasBetterTime = this.gameConfigService.assignBestTime(this.level(), this.timer());
+
+        if (wasBetterTime) {
+          const formattedTimer = this.timerPipe.transform(this.timer())
+          this.alertService.show('', 'achievement', `¡Nuevo récord! ${ formattedTimer }`);
+        }
       }
     });
 
@@ -85,16 +93,13 @@ export class Game implements OnInit, OnDestroy {
       }
     });
 
-    effect(() => {
+    effect((onCleanup) => {
       if (this.isGameStarted() && !this.isGameOver() && !this.victory()) {
-        this.timerId = setInterval(() => {
+        const interval = setInterval(() => {
           this.timer.update((time) => time + 1);
         }, 1000);
-      } else {
-        if (this.timerId) {
-          clearInterval(this.timerId);
-          this.timerId = null;
-        }
+
+        onCleanup(() => clearInterval(interval));
       }
     });
   }
@@ -110,12 +115,6 @@ export class Game implements OnInit, OnDestroy {
     this.columns.set(config.columns);
     this.mines.set(config.mines);
     this.level.set(config.level);
-  }
-
-  ngOnDestroy() {
-    if (this.timerId) {
-      clearInterval(this.timerId);
-    }
   }
 
   buildBoard() {
@@ -206,7 +205,8 @@ export class Game implements OnInit, OnDestroy {
   }
 
   revealWay(row: number, column: number, updatedBoard: Box[][]) {
-    const withinLimits: boolean = row >= 0 && row < this.rows() && column >= 0 && column < this.columns();
+    const withinLimits: boolean =
+      row >= 0 && row < this.rows() && column >= 0 && column < this.columns();
     if (!withinLimits) {
       return;
     }
@@ -258,6 +258,11 @@ export class Game implements OnInit, OnDestroy {
 
   flagBox(event: MouseEvent, rowIndex: number, columnIndex: number) {
     event.preventDefault();
+
+    if (this.level() === 'No Flags') {
+      return;
+    }
+
     if (this.isGameOver() || this.victory() || this.board()[rowIndex][columnIndex].isRevealed) {
       return;
     }
@@ -291,11 +296,23 @@ export class Game implements OnInit, OnDestroy {
 
   getEndGameMessage(): string {
     const message = this.gameConfigService.getRandomMessage(this.isGameOver());
-    const score = this.gameConfigService.calcScore(this.rows(), this.columns(), this.mines(), this.timer(), this.isGameOver());
+    const score = this.gameConfigService.calcScore(
+      this.rows(),
+      this.columns(),
+      this.mines(),
+      this.timer(),
+      this.isGameOver(),
+    );
+    const wasBetterScore: boolean = this.gameConfigService.assignBestScore(this.level(), score);
+
+    if (wasBetterScore && this.victory()) {
+      this.alertService.show('', 'achievement', `Nueva puntuación máxima`);
+    }
+
     return `${message}. Tu puntaje fue de ${score}`;
   }
 
-  redirect(){
+  redirect() {
     setTimeout(() => {
       this.alertView()?.nativeElement?.scrollIntoView({
         behavior: 'smooth',
