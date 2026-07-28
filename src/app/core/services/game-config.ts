@@ -21,7 +21,7 @@ export class GameConfigService {
       description: 'Tablero 10 x 10 con 15 minas',
     },
     {
-      level: 'Bathrooms Mode',
+      level: 'Bathrooms',
       rows: 16,
       columns: 9,
       mines: 22,
@@ -64,6 +64,13 @@ export class GameConfigService {
     },
     {
       level: 'No Flags',
+      rows: 13,
+      columns: 33,
+      mines: 60,
+      description: 'Tablero 13 x 33 con 60 minas sin poder usar banderas',
+    },
+    {
+      level: 'Hobby Static',
       rows: 13,
       columns: 33,
       mines: 60,
