@@ -61,12 +61,16 @@
           }}">
           @if (box.isRevealed) {
             @if (box.hasMine) {
-              <div class="flex items-center justify-center gap-0.5 w-full h-full p-0.5">
-                <span class="text-[10px] sm:text-xs leading-none">🧨</span>
+              <div class="flex items-center justify-center w-full h-full p-0.5 min-w-0 overflow-hidden">
+                <img
+                  src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_bomb_03.jpg"
+                  alt="Dinamita WoW"
+                  class="w-[45%] max-w-[20px] aspect-square object-contain mix-blend-screen shrink-0 relative z-10"
+                />
                 <img
                   src="https://wow.zamimg.com/images/wow/icons/large/spell_fire_selfdestruct.jpg"
                   alt="Explosión WoW"
-                  class="w-4 h-4 sm:w-5 sm:h-5 object-cover rounded-sm border border-red-500/80 shadow-[0_0_4px_rgba(239,68,68,0.8)]"
+                  class="w-[48%] max-w-[22px] aspect-square object-cover rounded-sm border border-red-500/90 shadow-[0_0_6px_rgba(239,68,68,0.9)] shrink-0 -ml-1.5 relative z-0"
                 />
               </div>
             } @else if (box.minesAround > 0) {

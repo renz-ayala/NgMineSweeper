@@ -261,22 +261,21 @@ export class Game implements OnInit {
 
   flagBox(event: MouseEvent, rowIndex: number, columnIndex: number) {
     event.preventDefault();
-
-    if (this.level() === 'No Flags') {
+    if (this.isGameOver() || this.victory() || this.level() === 'No Flags') {
       return;
     }
 
-    if (this.minesLeft() <= 0) {
+    const box = this.board()[rowIndex][columnIndex];
+    if (box.isRevealed) {
       return;
     }
-
-    if (this.isGameOver() || this.victory() || this.board()[rowIndex][columnIndex].isRevealed) {
+    if (!box.isFlagged && this.minesLeft() <= 0) {
       return;
     }
 
     this.board.update((updatedBoard) => {
-      const box = updatedBoard[rowIndex][columnIndex];
-      box.isFlagged = !box.isFlagged;
+      const updateBox = updatedBoard[rowIndex][columnIndex];
+      updateBox.isFlagged = !updateBox.isFlagged;
       return [...updatedBoard];
     });
   }

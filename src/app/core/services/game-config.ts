@@ -21,6 +21,13 @@ export class GameConfigService {
       description: 'Tablero 10 x 10 con 15 minas',
     },
     {
+      level: 'Bathrooms Mode',
+      rows: 16,
+      columns: 9,
+      mines: 22,
+      description: 'Tablero de 16x9. Ideal para pasar el rato en el celular'
+    },
+    {
       level: 'Medium',
       rows: 16,
       columns: 16,
