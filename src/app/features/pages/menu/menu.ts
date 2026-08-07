@@ -1,8 +1,9 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { GameConfigService } from '../../../core/services/game-config';
+import { GameConfigService } from '../../../core/services/game-config-service';
 import { PercentPipe } from '../../../shared/pipes/percent-pipe';
 import { TimePipe } from '../../../shared/pipes/time-pipe';
+import { LanguageService } from '../../../core/services/language-service';
 
 @Component({
   selector: 'app-menu',
@@ -12,6 +13,7 @@ import { TimePipe } from '../../../shared/pipes/time-pipe';
 export class Menu {
   router = inject(Router);
   gameConfigService = inject(GameConfigService);
+  languageService = inject(LanguageService);
 
   selectedDifficulty = signal<Difficulty>(this.gameConfigService.difficulties[0]);
 

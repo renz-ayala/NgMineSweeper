@@ -1,6 +1,7 @@
 <div class="min-h-screen w-full flex items-center justify-center bg-zinc-950 p-4 select-none font-sans">
   <div class="w-full max-w-4xl bg-[#0b0a0d] border-2 border-[#43382b] rounded-md shadow-[0_0_30px_rgba(0,0,0,0.95),inset_0_0_15px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col">
     <header class="bg-gradient-to-r from-[#141217] via-[#241e17] to-[#141217] border-b-2 border-[#382e22] px-3 py-2 flex items-center justify-between relative z-10 shadow-md">
+
       <div class="flex items-center gap-3">
         <div class="relative w-8 h-8 min-w-[32px] rounded-full bg-[#050505] border-2 border-[#ffd100] shadow-[0_0_10px_#22c55e] flex items-center justify-center">
           <div class="w-full h-full rounded-full bg-[radial-gradient(circle_at_center,#86efac_0%,#22c55e_40%,#15803d_70%,#022c22_100%)] flex items-center justify-center shadow-inner">
@@ -9,10 +10,41 @@
           <div class="absolute top-1 left-1.5 w-2 h-2 rounded-full bg-white/40"></div>
         </div>
 
-        <h1 class="text-2xl sm:text-3xl font-black text-center tracking-wide [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_0_2px_4px_rgba(0,0,0,0.9)] select-none">
-          <span class="text-zinc-400">Busca</span><span class="text-[#ffd100]">Minitas</span>
+        <h1 class="text-2xl sm:text-3xl font-black tracking-wide [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_0_2px_4px_rgba(0,0,0,0.9)] select-none">
+          <span class="text-zinc-400">{{ languageService.i18n().appNamePrefix }}</span>
+          <span class="text-[#ffd100]">{{ languageService.i18n().appNameSuffix }}</span>
         </h1>
       </div>
+
+      <button
+        type="button"
+        (click)="languageService.toggleLanguage()"
+        class="ml-auto relative flex items-center bg-[#070608] border-2 border-[#3a2e22] hover:border-[#a38038] p-0.5 rounded-sm shadow-[inset_0_2px_4px_rgba(0,0,0,0.9)] cursor-pointer transition-all duration-200 select-none group">
+        <span
+          [class.text-[#ffd100]]="languageService.currentLang() === 'en'"
+          [class.bg-gradient-to-b]="languageService.currentLang() === 'en'"
+          [class.from-[#261f14]]="languageService.currentLang() === 'en'"
+          [class.to-[#0f0c08]]="languageService.currentLang() === 'en'"
+          [class.border-[#ffd100]]="languageService.currentLang() === 'en'"
+          [class.shadow-[0_0_8px_rgba(255,209,0,0.3)]]="languageService.currentLang() === 'en'"
+          [class.text-zinc-500]="languageService.currentLang() !== 'en'"
+          [class.border-transparent]="languageService.currentLang() !== 'en'"
+          class="px-2 py-0.5 text-[10px] font-extrabold font-mono tracking-wider border rounded-xs transition-all duration-200 [text-shadow:_1px_1px_0_#000]">
+          EN
+        </span>
+        <span
+          [class.text-[#ffd100]]="languageService.currentLang() === 'es'"
+          [class.bg-gradient-to-b]="languageService.currentLang() === 'es'"
+          [class.from-[#261f14]]="languageService.currentLang() === 'es'"
+          [class.to-[#0f0c08]]="languageService.currentLang() === 'es'"
+          [class.border-[#ffd100]]="languageService.currentLang() === 'es'"
+          [class.shadow-[0_0_8px_rgba(255,209,0,0.3)]]="languageService.currentLang() === 'es'"
+          [class.text-zinc-500]="languageService.currentLang() !== 'es'"
+          [class.border-transparent]="languageService.currentLang() !== 'es'"
+          class="px-2 py-0.5 text-[10px] font-extrabold font-mono tracking-wider border rounded-xs transition-all duration-200 [text-shadow:_1px_1px_0_#000]">
+          ES
+        </span>
+      </button>
     </header>
 
     <div class="grid grid-cols-12 min-h-[380px] bg-[#070608]">
@@ -69,7 +101,7 @@
               {{ selectedDifficulty().level }}
             </h2>
             <p class="text-xs text-[#c7b38d] mt-1 [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_0_2px_4px_rgba(0,0,0,0.9)]">
-              {{ selectedDifficulty().description }}
+              {{ gameConfigService.getDifficultDescription(selectedDifficulty().level) }}
             </p>
           </div>
         </div>
@@ -80,7 +112,7 @@
             (click)="startGame()"
             style="font-family: 'Philosopher', sans-serif;"
             class="w-full py-2 bg-gradient-to-b from-[#7f0000] via-[#520000] to-[#260000] hover:from-[#990000] hover:to-[#380000] border-[3px] border-[#4a4a4a] rounded-md text-[#ffd100] text-lg tracking-normal shadow-[inset_0_1px_2px_rgba(255,255,255,0.2),inset_0_-2px_4px_rgba(0,0,0,0.9),0_2px_4px_rgba(0,0,0,0.8)] [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000] active:translate-y-0.5 transition-all cursor-pointer">
-            Enter Instance
+            {{ languageService.i18n().enterInstance }}
           </button>
         </div>
 
@@ -89,9 +121,9 @@
     </div>
 
     <footer class="bg-[#070608] border-t-2 border-[#382e22] px-4 py-1.5 flex items-center justify-between text-[10px] text-[#8a7343] [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_0_2px_4px_rgba(0,0,0,0.9)]">
-      <span>Densidad: {{ density() | percent}}</span>
-      <span>Best Score: {{ bestScore() }}</span>
-      <span>Best Time: {{ bestTime() | time}}</span>
+      <span>{{ languageService.i18n().density }}: {{ density() | percent}}</span>
+      <span>{{ languageService.i18n().bestScore }}: {{ bestScore() }}</span>
+      <span>{{ languageService.i18n().bestTime }}: {{ bestTime() | time}}</span>
     </footer>
 
   </div>

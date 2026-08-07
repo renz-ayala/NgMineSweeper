@@ -11,10 +11,11 @@ import {
 import { Box } from '../../../core/models/box.model';
 import { AlertService } from '../../../core/services/alert-service';
 import { CounterPipe } from '../../../shared/pipes/counter-pipe';
-import { GameConfigService } from '../../../core/services/game-config';
+import { GameConfigService } from '../../../core/services/game-config-service';
 import { Router } from '@angular/router';
 import { TimePipe } from '../../../shared/pipes/time-pipe';
 import { Alert } from '../../../shared/components/alert/alert';
+import { LanguageService } from '../../../core/services/language-service';
 
 @Component({
   selector: 'app-game',
@@ -25,6 +26,7 @@ import { Alert } from '../../../shared/components/alert/alert';
 export class Game implements OnInit {
   alertService = inject(AlertService);
   gameConfigService = inject(GameConfigService);
+  langService = inject(LanguageService);
   router = inject(Router);
   timerPipe = inject(TimePipe);
 
@@ -81,7 +83,11 @@ export class Game implements OnInit {
 
         if (wasBetterTime) {
           const formattedTimer = this.timerPipe.transform(this.timer());
-          this.alertService.show('', 'achievement', `¡Nuevo récord! ${formattedTimer}`);
+          this.alertService.show(
+            '',
+            'achievement',
+            `${this.langService.i18n().newRecord} ${formattedTimer}`,
+          );
         }
       }
     });
@@ -313,10 +319,12 @@ export class Game implements OnInit {
     const wasBetterScore: boolean = this.gameConfigService.assignBestScore(this.level(), score);
 
     if (wasBetterScore && this.victory()) {
-      this.alertService.show('', 'achievement', `Nueva puntuación máxima`);
+      this.alertService.show('', 'achievement', this.langService.i18n().highScoreUnlocked);
     }
 
-    return `${message}. Tu puntaje fue de ${score}`;
+    return this.langService.i18n().scoreMessage
+      .replace('{message}', message)
+      .replace('{score}', score.toString());
   }
 
   redirect() {
