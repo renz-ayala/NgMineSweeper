@@ -5,21 +5,21 @@ import { Alert } from '../models/alert.model';
   providedIn: 'root',
 })
 export class AlertService {
-  defaultAlert = signal<Alert>({ show: false, message: '', type: 'info' });
-
-  private state = signal<Alert>(this.defaultAlert());
+  private state = signal<Alert[]>([]);
   alertState = this.state.asReadonly();
 
-  show(message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') {
-    const newAlert: Alert = { show: true, message, type, };
-    this.state.set(newAlert);
+  show(message: string, type: 'success' | 'error' | 'achievement' = 'success', title?: string) {
+    const id = crypto.randomUUID();
+    const newAlert: Alert = { id, message, type, title };
+
+    this.state.update((alerts) => [...alerts, newAlert]);
 
     setTimeout(() => {
-      this.close();
+      this.close(id);
     }, 10000);
   }
 
-  close() {
-    this.state.update((current) => ({ ...current, show: false }));
+  close(id: string) {
+    this.state.update((alerts) => alerts.filter((a) => a.id !== id));
   }
 }
