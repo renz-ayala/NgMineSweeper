@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { TimePipe } from '../../../shared/pipes/time-pipe';
 import { Alert } from '../../../shared/components/alert/alert';
 import { LanguageService } from '../../../core/services/language-service';
+import { SoundService } from '../../../core/services/sound-service';
 
 @Component({
   selector: 'app-game',
@@ -27,6 +28,7 @@ export class Game implements OnInit {
   alertService = inject(AlertService);
   gameConfigService = inject(GameConfigService);
   langService = inject(LanguageService);
+  soundService = inject(SoundService);
   router = inject(Router);
   timerPipe = inject(TimePipe);
 
@@ -74,6 +76,7 @@ export class Game implements OnInit {
   constructor() {
     effect(() => {
       if (this.victory()) {
+        this.soundService.playSound('win');
         const winMessage = this.getEndGameMessage();
         this.alertService.show(winMessage, 'success');
         this.revealNumbers();
@@ -94,6 +97,7 @@ export class Game implements OnInit {
 
     effect(() => {
       if (this.isGameOver()) {
+        this.soundService.playSound('explosion');
         const lossMessage = this.getEndGameMessage();
         this.alertService.show(lossMessage, 'error');
         this.redirect();
@@ -148,6 +152,7 @@ export class Game implements OnInit {
     if (this.isGameOver() || this.victory()) {
       return;
     }
+    this.soundService.playSound('click');
     if (!this.isGameStarted()) {
       this.putMines(rowIndex, columnIndex);
       this.isGameStarted.set(true);
@@ -279,6 +284,7 @@ export class Game implements OnInit {
       return;
     }
 
+    this.soundService.playSound('flag');
     this.board.update((updatedBoard) => {
       const updateBox = updatedBoard[rowIndex][columnIndex];
       updateBox.isFlagged = !updateBox.isFlagged;
@@ -291,6 +297,8 @@ export class Game implements OnInit {
     if (!this.isGameStarted()) {
       return;
     }
+
+    this.soundService.setMuted(true);
     this.resetState();
   }
 

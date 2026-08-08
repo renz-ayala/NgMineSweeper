@@ -3,8 +3,8 @@ export const environment = {
   defaultLang: 'en',
   i18n: {
     en: {
-      appNamePrefix: 'Mines',
-      appNameSuffix: 'Sweeper',
+      appNamePrefix: 'Mine',
+      appNameSuffix: 'sweeper',
       enterInstance: 'Enter Instance',
       density: 'Density',
       bestScore: 'Best Score',
@@ -41,10 +41,11 @@ export const environment = {
         'Unstoppable!',
         'Flawless execution!',
       ],
+      credits: 'credits',
     },
     es: {
       appNamePrefix: 'Busca',
-      appNameSuffix: 'Minitas',
+      appNameSuffix: 'minitas',
       enterInstance: 'Entrar al Campo Minado',
       density: 'Densidad',
       bestScore: 'Mejor Puntaje',
@@ -75,6 +76,7 @@ export const environment = {
         '¡Victoria!',
         '¡Excelente trabajo!',
       ],
+      credits: 'creditos',
     },
   },
 };
