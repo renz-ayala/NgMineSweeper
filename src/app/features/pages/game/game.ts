@@ -47,6 +47,8 @@ export class Game implements OnInit {
   showAd = signal(false);
   pendingBox = signal<{ pendingRow: number; pendingCol: number } | null>(null);
 
+  isRouletteMode = (() => this.gameSettings().level === 'Roulette');
+
   isRandomGame = computed(
     () => {
       switch (this.gameSettings().level) {
@@ -160,6 +162,19 @@ export class Game implements OnInit {
       matrix.push(matrixRow);
     }
     this.board.set(matrix);
+
+    if (this.isRouletteMode()) {
+      this.postRouletteMode();
+    }
+  }
+
+  postRouletteMode(){
+    const totalCells = this.gameSettings().rows * this.gameSettings().columns;
+    const safeIndex = Math.floor(Math.random() * totalCells);
+    const safeRow = Math.floor(safeIndex / this.gameSettings().rows);
+    const safeCol = safeIndex % this.gameSettings().columns;
+    this.putMines(safeRow, safeCol);
+    this.isGameStarted.set(true);
   }
 
   revealBox(rowIndex: number, columnIndex: number) {
@@ -332,6 +347,7 @@ export class Game implements OnInit {
   }
 
   updateRandomBoard(): void {
+    this.soundService.setMuted(true);
     this.gameConfigService.setRandomConfig(this.gameSettings().level);
     this.initGameConfig();
     this.resetState();
@@ -405,6 +421,11 @@ export class Game implements OnInit {
       });
     }
     this.pendingBox.set(null);
+  }
+
+  getBack(){
+    this.soundService.setMuted(true);
+    this.router.navigate(['']).then(() => {});
   }
 }
 

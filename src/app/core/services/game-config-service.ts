@@ -14,7 +14,7 @@ export class GameConfigService {
     { level: 'Bathrooms', rows: 16, columns: 9, mines: 22, revertLimit: 1, isNoFlagMode: false },
     { level: 'Medium', rows: 16, columns: 16, mines: 40, revertLimit: 2, isNoFlagMode: false },
     { level: 'Hard', rows: 16, columns: 30, mines: 99, revertLimit: 3, isNoFlagMode: false },
-    { level: 'Tryhard', rows: 20, columns: 24, mines: 168, revertLimit: 3, isNoFlagMode: false },
+    { level: 'Tryhard', rows: 20, columns: 24, mines: 120, revertLimit: 3, isNoFlagMode: false },
     { level: 'Random', rows: 0, columns: 0, mines: 0, revertLimit: 0 },
     { level: 'Hobby', rows: 0, columns: 0, mines: 0, revertLimit: 0 },
     { level: 'No Flags', rows: 13, columns: 33, mines: 60, revertLimit: 1, isNoFlagMode: true },
@@ -26,11 +26,12 @@ export class GameConfigService {
       revertLimit: 1,
       isNoFlagMode: false,
     },
+    { level: 'Roulette', rows: 3, columns: 3, mines: 8, revertLimit: 0, isNoFlagMode: true},
   ];
 
   randomCap: RandomParams[] = [
-    { level: 'Hobby', min: 20, max: 30, minDensity: 12.6, maxDensity: 14.6, randomRevertLimit: 1 },
-    { level: 'Random', min: 9, max: 30, minDensity: 10, maxDensity: 38, randomRevertLimit: 3 },
+    { level: 'Hobby', min: 6, max: 30, minDensity: 11.6, maxDensity: 13.6, randomRevertLimit: 1 },
+    { level: 'Random', min: 9, max: 30, minDensity: 10, maxDensity: 25, randomRevertLimit: 3 },
   ];
 
   config = signal<Difficulty>(this.difficulties[0]);
