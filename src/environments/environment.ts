@@ -42,6 +42,11 @@ export const environment = {
         'Flawless execution!',
       ],
       credits: 'credits',
+      tacticalRevert: 'Tactical Revert',
+      revertDescription: 'A mine is about to explode! Use your revert to bypass the blast.',
+      reverseLeft: 'Reverts Left:',
+      continueGame: 'Continue Game',
+      giveUp: 'Give Up',
     },
     es: {
       appNamePrefix: 'Busca',
@@ -68,15 +73,15 @@ export const environment = {
         'No Flags': 'Tablero 13 x 33 con 60 minas sin poder usar banderas',
         'Hobby Static': 'Tablero 13 x 33 con 60 minas',
       },
-      lossMessages: [
-        '¡Fin del juego!',
-        'Mala suerte',
-      ],
-      winMessages: [
-        '¡Victoria!',
-        '¡Excelente trabajo!',
-      ],
+      lossMessages: ['¡Fin del juego!', 'Mala suerte'],
+      winMessages: ['¡Victoria!', '¡Excelente trabajo!'],
       credits: 'creditos',
+      tacticalRevert: 'Reversión Táctica',
+      revertDescription:
+        '¡Una mina está a punto de explotar! Usa un reintento para evitar la detonación.',
+      reverseLeft: 'Reintentos restantes:',
+      continueGame: 'Continuar Partida',
+      giveUp: 'Rendirme',
     },
   },
 };

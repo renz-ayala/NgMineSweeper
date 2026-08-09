@@ -49,13 +49,13 @@ export class Menu {
 
   openCredits(): void {
     this.soundService.playSound('click');
+    this.soundService.playSound('credits');
     this.showCreditsModal.set(true);
   }
 
   closeCredits(): void {
     this.soundService.playSound('click');
+    this.soundService.setMuted(true);
     this.showCreditsModal.set(false);
   }
-
-  protected readonly close = close;
 }

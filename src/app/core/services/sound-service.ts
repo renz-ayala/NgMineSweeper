@@ -11,6 +11,8 @@ export class SoundService {
     explosion: new Audio('assets/sounds/explosion.wav'),
     flag: new Audio('assets/sounds/camera.ogg'),
     win: new Audio('assets/sounds/BGM.ogg'),
+    alert: new Audio('assets/sounds/sw_school_pa_alert.wav'),
+    credits: new Audio('assets/sounds/tom_me_2_128.mp3'),
   };
 
   constructor() {

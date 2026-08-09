@@ -4,4 +4,5 @@ export interface RandomParams {
   max: number;
   minDensity: number;
   maxDensity: number;
+  randomRevertLimit: number;
 }

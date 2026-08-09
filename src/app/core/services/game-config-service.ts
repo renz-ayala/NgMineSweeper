@@ -9,21 +9,28 @@ export class GameConfigService {
   langService = inject(LanguageService);
 
   difficulties: Difficulty[] = [
-    { level: 'Super Easy', rows: 9, columns: 9, mines: 10, description: '' },
-    { level: 'Easy', rows: 10, columns: 10, mines: 15, description: '' },
-    { level: 'Bathrooms', rows: 16, columns: 9, mines: 22, description: '' },
-    { level: 'Medium', rows: 16, columns: 16, mines: 40, description: '' },
-    { level: 'Hard', rows: 16, columns: 30, mines: 99, description: '' },
-    { level: 'Tryhard', rows: 20, columns: 24, mines: 168, description: '' },
-    { level: 'Random', rows: 0, columns: 0, mines: 0, description: '' },
-    { level: 'Hobby', rows: 0, columns: 0, mines: 0, description: '' },
-    { level: 'No Flags', rows: 13, columns: 33, mines: 60, description: '' },
-    { level: 'Hobby Static', rows: 13, columns: 33, mines: 60, description: '' },
+    { level: 'Super Easy', rows: 9, columns: 9, mines: 10, revertLimit: 1, isNoFlagMode: false },
+    { level: 'Easy', rows: 10, columns: 10, mines: 15, revertLimit: 1, isNoFlagMode: false },
+    { level: 'Bathrooms', rows: 16, columns: 9, mines: 22, revertLimit: 1, isNoFlagMode: false },
+    { level: 'Medium', rows: 16, columns: 16, mines: 40, revertLimit: 2, isNoFlagMode: false },
+    { level: 'Hard', rows: 16, columns: 30, mines: 99, revertLimit: 3, isNoFlagMode: false },
+    { level: 'Tryhard', rows: 20, columns: 24, mines: 168, revertLimit: 3, isNoFlagMode: false },
+    { level: 'Random', rows: 0, columns: 0, mines: 0, revertLimit: 0 },
+    { level: 'Hobby', rows: 0, columns: 0, mines: 0, revertLimit: 0 },
+    { level: 'No Flags', rows: 13, columns: 33, mines: 60, revertLimit: 1, isNoFlagMode: true },
+    {
+      level: 'Hobby Static',
+      rows: 13,
+      columns: 33,
+      mines: 60,
+      revertLimit: 1,
+      isNoFlagMode: false,
+    },
   ];
 
   randomCap: RandomParams[] = [
-    { level: 'Hobby', min: 20, max: 30, minDensity: 12.6, maxDensity: 14.6 },
-    { level: 'Random', min: 9, max: 30, minDensity: 10, maxDensity: 38 },
+    { level: 'Hobby', min: 20, max: 30, minDensity: 12.6, maxDensity: 14.6, randomRevertLimit: 1 },
+    { level: 'Random', min: 9, max: 30, minDensity: 10, maxDensity: 38, randomRevertLimit: 3 },
   ];
 
   config = signal<Difficulty>(this.difficulties[0]);
@@ -52,7 +59,7 @@ export class GameConfigService {
 
   generateRandomConfig(level: string): Difficulty {
     const params = this.randomCap.find((cap) => cap.level === level) || this.randomCap[0];
-    const { min, max, minDensity, maxDensity } = params;
+    const { min, max, minDensity, maxDensity, randomRevertLimit } = params;
 
     const { rows, columns } = this.getRandomRowsAndCols(max, min);
     const totalBox = rows * columns;
@@ -60,7 +67,7 @@ export class GameConfigService {
     const density = this.getRandomDensity(maxDensity, minDensity);
 
     const mines = Math.max(1, Math.floor(totalBox * density));
-    return { level, rows, columns, mines };
+    return { level, rows, columns, mines, revertLimit: randomRevertLimit };
   }
 
   getRandomRowsAndCols(max: number, min: number): { rows: number; columns: number } {

@@ -47,7 +47,7 @@
       </label>
     </div>
 
-    @if (level() === 'Random' || level() === 'Hobby') {
+    @if (isRandomGame()) {
       <button
         type="button"
         class="btn btn-ghost btn-sm btn-square text-zinc-400 hover:text-[#ffd100] hover:bg-[#1f1b24] cursor-pointer"
@@ -120,3 +120,10 @@
     </div>
   }
 </div>
+
+@if (showAd()) {
+  <app-detonation-cancel
+    [revertCount]="revertCount()"
+    [revertLimit]="gameSettings().revertLimit"
+    (isExplosionCanceled)="resumeGame($event)"/>
+}

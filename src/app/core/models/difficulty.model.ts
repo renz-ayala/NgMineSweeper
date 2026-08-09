@@ -3,5 +3,6 @@ interface Difficulty {
   rows: number;
   columns: number;
   mines: number;
-  description?: string;
+  revertLimit: number;
+  isNoFlagMode?: boolean;
 }

@@ -18,7 +18,8 @@
         <ul class="space-y-1.5 list-disc list-inside text-slate-300">
           @for (credit of creditList(); track $index) {
             <li><strong>{{ credit.name }}:</strong> Made by {{ credit.author }} ({{ credit.uri }}) —
-              <span [class]="credit.license === 'CC-BY 3.0' ? 'text-emerald-400' : 'text-slate-400'">{{ credit.license }}</span></li>
+              <span [class]="getLicenseColorClass(credit.license)">{{ credit.license }}</span>
+            </li>
           } @empty {
             <span>No credits</span>
           }
