@@ -1,0 +1,44 @@
+<div class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+  <div class="bg-[#16141a] border border-[#2d241b] rounded-xl max-w-lg w-full max-h-[80vh] flex flex-col shadow-2xl text-slate-200">
+    <div class="flex items-center justify-between p-4 border-b border-[#2d241b]">
+      <h2 class="text-lg font-bold text-[#ffd100] flex items-center gap-2">
+        <span>📜</span> Credits & Licenses
+      </h2>
+      <button
+        type="button"
+        (click)="closeCredits()"
+        class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
+        ✕
+      </button>
+    </div>
+
+    <div class="p-4 overflow-y-auto space-y-4 text-xs leading-relaxed">
+      <section>
+        <h3 class="font-bold text-amber-500 uppercase tracking-wider mb-2 text-[11px]">Art & Audio Assets</h3>
+        <ul class="space-y-1.5 list-disc list-inside text-slate-300">
+          @for (credit of creditList(); track $index) {
+            <li><strong>{{ credit.name }}:</strong> Made by {{ credit.author }} ({{ credit.uri }}) —
+              <span [class]="getLicenseColorClass(credit.license)">{{ credit.license }}</span>
+            </li>
+          } @empty {
+            <span>No credits</span>
+          }
+        </ul>
+      </section>
+
+      <section class="border-t border-[#2d241b] pt-3">
+        <h3 class="font-bold text-amber-500 uppercase tracking-wider mb-2 text-[11px]">Interface & Frameworks</h3>
+        <p class="text-slate-400">UI Icons provided by Lucide Icons / Heroicons (MIT License).</p>
+      </section>
+    </div>
+
+    <div class="p-3 border-t border-[#2d241b] text-center bg-[#100e13] rounded-b-xl">
+      <button
+        type="button"
+        (click)="closeCredits()"
+        class="px-4 py-1.5 bg-[#2d241b] hover:bg-[#3d3125] text-white rounded font-medium text-xs transition-colors cursor-pointer">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

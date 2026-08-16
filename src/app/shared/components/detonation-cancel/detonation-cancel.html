@@ -1,0 +1,43 @@
+<div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
+  <div class="bg-[#121015] border-2 border-[#a38038] rounded-md max-w-sm w-full p-5 text-center shadow-[0_0_25px_rgba(0,0,0,0.9)] flex flex-col items-center gap-4">
+    <div class="w-14 h-14 rounded-full bg-gradient-to-b from-[#261f14] to-[#080709] border-2 border-[#ffd100] flex items-center justify-center shadow-[0_0_15px_rgba(255,209,0,0.2)]">
+      <img
+        src="assets/images/virus_warning.png"
+        alt="Warning"
+        class="w-8 h-8 object-contain filter invert-[82%] sepia-[58%] saturate-[2200%] hue-rotate-[355deg] brightness-[104%] contrast-[104%]" />
+    </div>
+    <div>
+      <h2 class="text-lg font-black text-[#ffd100] uppercase tracking-wider [text-shadow:_1px_1px_0_#000]">
+        {{ langService.i18n().tacticalRevert }}
+      </h2>
+      <p class="text-xs text-[#c7b38d] mt-1.5 leading-relaxed">
+        {{ langService.i18n().revertDescription }}
+      </p>
+      <div class="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1a1622] border border-[#3d3224]">
+        <span class="text-[10px] font-bold text-zinc-400 tracking-wider">{{ langService.i18n().reverseLeft }}</span>
+        <span class="text-xs font-black text-[#ffd100]">
+          {{ revertCountPlus() }} / {{ revertLimit() }}
+        </span>
+      </div>
+    </div>
+    <div class="w-full flex flex-col gap-2 pt-2 border-t border-[#261f18]">
+      <button
+        type="button"
+        (click)="cancelExplosion()"
+        style="font-family: 'Philosopher', sans-serif;"
+        class="w-full py-2 bg-gradient-to-b from-[#15803d] via-[#166534] to-[#14532d] hover:from-[#16a34a] hover:to-[#15803d] border-2 border-[#86efac] rounded text-white text-sm font-bold tracking-wide shadow-md transition-all cursor-pointer active:translate-y-0.5 flex items-center justify-center gap-2">
+        <img
+          src="assets/images/clapperboard.png"
+          alt=""
+          class="w-4 h-4 object-contain" />
+        <span>{{ langService.i18n().continueGame }}</span>
+      </button>
+      <button
+        type="button"
+        (click)="confirmExplosion()"
+        class="w-full py-1.5 bg-[#09080b] hover:bg-[#141217] border border-[#382e22] rounded text-zinc-400 hover:text-zinc-200 text-xs font-semibold transition-all cursor-pointer">
+        {{ langService.i18n().giveUp }}
+      </button>
+    </div>
+  </div>
+</div>

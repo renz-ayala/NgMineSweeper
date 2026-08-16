@@ -1,9 +1,12 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
+import { LanguageService } from '../../core/services/language-service';
 
 @Pipe({
   name: 'time',
 })
 export class TimePipe implements PipeTransform {
+  langService = inject(LanguageService);
+
   transform(value: number): string {
     if (value == null || isNaN(value) || value < 0) {
       return '--:--';
@@ -12,7 +15,12 @@ export class TimePipe implements PipeTransform {
     const oneDay = 86400;
     if (value >= oneDay) {
       const days = Math.floor(value / oneDay);
-      return days === 1 ? '+1 día' : `+${days} días`;
+
+      if (days === 1) {
+        return this.langService.i18n().plusOneDay;
+      }
+
+      return this.langService.i18n().plusDays.replace('{days}', days.toString());
     }
 
     const hours = Math.floor(value / 3600);

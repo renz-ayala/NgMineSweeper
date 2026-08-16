@@ -1,119 +1,49 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { RandomParams } from '../models/random-params.model';
+import { LanguageService } from './language-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameConfigService {
+  langService = inject(LanguageService);
+
   difficulties: Difficulty[] = [
-    {
-      level: 'Super Easy',
-      rows: 9,
-      columns: 9,
-      mines: 10,
-      description: 'Tablero 9 x 9 con 10 minas',
-    },
-    {
-      level: 'Easy',
-      rows: 10,
-      columns: 10,
-      mines: 15,
-      description: 'Tablero 10 x 10 con 15 minas',
-    },
-    {
-      level: 'Bathrooms',
-      rows: 16,
-      columns: 9,
-      mines: 22,
-      description: 'Tablero de 16x9. Ideal para pasar el rato en el celular'
-    },
-    {
-      level: 'Medium',
-      rows: 16,
-      columns: 16,
-      mines: 40,
-      description: 'Tablero 16 x 16 con 40 minas',
-    },
-    {
-      level: 'Hard',
-      rows: 16,
-      columns: 30,
-      mines: 99,
-      description: 'Tablero 16 x 30 con 99 minas',
-    },
-    {
-      level: 'Tryhard',
-      rows: 20,
-      columns: 24,
-      mines: 168,
-      description: 'Tablero 20 x 24 con 168 minas',
-    },
-    {
-      level: 'Random',
-      rows: 0,
-      columns: 0,
-      mines: 0,
-      description: 'Tamaño y minas totalmente aleatorios',
-    },
-    {
-      level: 'Hobby',
-      rows: 0,
-      columns: 0,
-      mines: 0,
-      description: 'Partidas casuales y aleatorias para pasar el rato',
-    },
-    {
-      level: 'No Flags',
-      rows: 13,
-      columns: 33,
-      mines: 60,
-      description: 'Tablero 13 x 33 con 60 minas sin poder usar banderas',
-    },
+    { level: 'Super Easy', rows: 9, columns: 9, mines: 10, revertLimit: 1, isNoFlagMode: false },
+    { level: 'Easy', rows: 10, columns: 10, mines: 15, revertLimit: 1, isNoFlagMode: false },
+    { level: 'Bathrooms', rows: 16, columns: 9, mines: 22, revertLimit: 1, isNoFlagMode: false },
+    { level: 'Medium', rows: 16, columns: 16, mines: 40, revertLimit: 2, isNoFlagMode: false },
+    { level: 'Hard', rows: 16, columns: 30, mines: 99, revertLimit: 3, isNoFlagMode: false },
+    { level: 'Tryhard', rows: 20, columns: 24, mines: 120, revertLimit: 3, isNoFlagMode: false },
+    { level: 'Random', rows: 0, columns: 0, mines: 0, revertLimit: 0 },
+    { level: 'Hobby', rows: 0, columns: 0, mines: 0, revertLimit: 0 },
+    { level: 'No Flags', rows: 13, columns: 33, mines: 60, revertLimit: 1, isNoFlagMode: true },
     {
       level: 'Hobby Static',
       rows: 13,
       columns: 33,
       mines: 60,
-      description: 'Tablero 13 x 33 con 60 minas sin poder usar banderas',
+      revertLimit: 1,
+      isNoFlagMode: false,
     },
-    //{ level: 'Campaign', rows: 0, columns: 0, mines: 0 },
+    { level: 'Roulette', rows: 3, columns: 3, mines: 8, revertLimit: 0, isNoFlagMode: true},
   ];
 
   randomCap: RandomParams[] = [
-    { level: 'Hobby', min: 20, max: 30, minDensity: 12.6, maxDensity: 14.6 },
-    { level: 'Random', min: 9, max: 30, minDensity: 10, maxDensity: 38 },
-  ];
-
-  lossMessages: string[] = [
-    '¡Fin del juego!',
-    'Mala suerte',
-    'Te recogieron en bolsa de basura.',
-    'Tus restos cayeron en tres códigos postales.',
-    'Soplaste la vela equivocada.',
-    'Murió como vivió: sin pensar.',
-    'Te convertiste en contenido educativo.',
-    'Moriste haciendo lo que mejor sabes: probarla.',
-    'Vitamina Z para los carroñeros.',
-    'Como espectador de las gemelas.',
-    'En pedacitos, como gringo en Vietnam',
-    'Viste lo último que vio un argentino en las Malvinas.',
-    'El forense pidió el rompecabezas en modo difícil.',
-    'Moriste como leyenda... de los malos ejemplos.',
-    'Darwin acaba de sonreír.',
-  ];
-
-  winMessages: string[] = [
-    '¡Victoria!',
-    '¡Excelente trabajo!',
-    'Sorpresa: hoy no te lloran.',
-    'La parca se quedó con las ganas.',
-    'Hoy una familia de cuervos se queda sin comer.',
-    'Hoy los cuervos cenan arroz.',
-    'Hoy no acabaste como mexicano, en bolsa.',
-    'Llegó navidad.',
+    { level: 'Hobby', min: 6, max: 30, minDensity: 11.6, maxDensity: 13.6, randomRevertLimit: 1 },
+    { level: 'Random', min: 9, max: 30, minDensity: 10, maxDensity: 25, randomRevertLimit: 3 },
   ];
 
   config = signal<Difficulty>(this.difficulties[0]);
+
+  getDifficultDescription(level: string) {
+    const descriptions = this.langService.i18n().descriptions as Record<string, string>;
+    return descriptions[level] || '';
+  }
+
+  getRandomMessage(isGameOver: boolean): string {
+    return this.langService.getRandomMessage(isGameOver);
+  }
 
   setConfig(difficulty: Difficulty): void {
     if (difficulty.level === 'Random' || difficulty.level === 'Hobby') {
@@ -130,7 +60,7 @@ export class GameConfigService {
 
   generateRandomConfig(level: string): Difficulty {
     const params = this.randomCap.find((cap) => cap.level === level) || this.randomCap[0];
-    const { min, max, minDensity, maxDensity } = params;
+    const { min, max, minDensity, maxDensity, randomRevertLimit } = params;
 
     const { rows, columns } = this.getRandomRowsAndCols(max, min);
     const totalBox = rows * columns;
@@ -138,7 +68,7 @@ export class GameConfigService {
     const density = this.getRandomDensity(maxDensity, minDensity);
 
     const mines = Math.max(1, Math.floor(totalBox * density));
-    return { level, rows, columns, mines };
+    return { level, rows, columns, mines, revertLimit: randomRevertLimit };
   }
 
   getRandomRowsAndCols(max: number, min: number): { rows: number; columns: number } {
@@ -164,15 +94,12 @@ export class GameConfigService {
     return colors[minesAround] || 'text-base-content';
   }
 
-  getRandomMessage(isGameOver: boolean): string {
-    const list = isGameOver ? this.lossMessages : this.winMessages;
-    const index = Math.floor(Math.random() * list.length);
-    return list[index];
-  }
-
   calcScore(rows: number, cols: number, mines: number, time: number, isLoss: boolean): number {
     const totalCells = rows * cols;
-    if (totalCells === 0 || mines === 0) return 0;
+
+    if (totalCells === 0 || mines === 0) {
+      return 0;
+    }
 
     if (isLoss) {
       return Math.min(200, time * 2);
@@ -188,10 +115,12 @@ export class GameConfigService {
 
   assignBestScore(level: string, score: number) {
     const bestScore = this.recoverBestScore(level);
+
     if (score > bestScore) {
       localStorage.setItem(level, score.toString());
       return true;
     }
+
     return false;
   }
 
@@ -215,6 +144,7 @@ export class GameConfigService {
       localStorage.setItem(`${level}-time`, time.toString());
       return true;
     }
+
     return false;
   }
 
