@@ -1,129 +1,141 @@
-<app-alert />
-<div class="flex flex-col gap-1 bg-[#0d0c0f] p-4 rounded-xl shadow-2xl border border-[#2d241b] w-fit mx-auto max-w-full overflow-x-auto select-none font-mono">
-  <div class="flex items-center justify-between w-full px-1 py-2 font-mono font-bold text-xl select-none mb-2 gap-2">
-    <div class="text-[#f84d4d] bg-[#16141a] px-3.5 py-1.5 rounded border border-[#2d241b] min-w-[100px] text-center flex items-center justify-center gap-2.5">
-      <img
-        src="assets/images/Bomb_anim0001.png"
-        alt="Bomb"
-        class="w-6 h-6 object-contain"
-      />
-      <span class="text-lg font-bold font-mono">{{ minesLeft() | counter }}</span>
-    </div>
+<div class="min-h-screen w-full bg-base-300 flex flex-col items-center justify-center p-4">
+  <app-alert />
 
-    <button
-      type="button"
-      class="btn btn-ghost btn-sm btn-square text-zinc-400 hover:text-[#ffd100] hover:bg-[#1f1b24] cursor-pointer"
-      (click)="getBack()">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-      </svg>
-    </button>
+  <div class="flex flex-col gap-1 bg-base-100 p-4 rounded-xl shadow-2xl border-2 border-base-300 w-fit mx-auto max-w-full overflow-x-auto select-none font-mono">
 
-    <div #redirect class="cursor-pointer">
-      <label class="swap swap-flip text-3xl cursor-pointer" (click)="resetGame($event)">
-        <input type="checkbox" [checked]="isGameOver() || victory()"/>
-        <div class="swap-on flex items-center justify-center p-1">
-          @if (victory()) {
-            <img
-              src="assets/images/icon_cool.png"
-              alt="Victory"
-              class="w-8 h-8 object-contain"
-            />
-          } @else {
-            <img
-              src="assets/images/frame.png"
-              alt="GameOver"
-              class="w-8 h-8 object-contain"
-            />
-          }
-        </div>
-        <div class="swap-off flex items-center justify-center p-1">
-          <img
-            src="assets/images/icon_smile.png"
-            alt="Normal"
-            class="w-8 h-8 object-contain"
-          />
-        </div>
-      </label>
-    </div>
+    <!-- HEADER DEL JUEGO -->
+    <div class="flex items-center justify-between w-full px-1 py-2 font-mono font-bold text-xl select-none mb-2 gap-2">
 
-    @if (isRandomGame()) {
+      <!-- CONTADOR DE MINAS -->
+      <div class="text-error bg-base-200 px-3.5 py-1.5 rounded border border-base-300 min-w-[100px] text-center flex items-center justify-center gap-2.5">
+        <img
+          src="assets/images/Bomb_anim0001.png"
+          alt="Bomb"
+          class="w-6 h-6 object-contain"
+        />
+        <span class="text-lg font-bold font-mono">{{ minesLeft() | counter }}</span>
+      </div>
+
+      <!-- BOTÓN VOLVER -->
       <button
         type="button"
-        class="btn btn-ghost btn-sm btn-square text-zinc-400 hover:text-[#ffd100] hover:bg-[#1f1b24] cursor-pointer"
-        (click)="updateRandomBoard()">
+        class="btn btn-ghost btn-sm btn-square text-base-content hover:text-primary hover:bg-base-200 cursor-pointer"
+        (click)="getBack()">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
         </svg>
       </button>
-    }
 
-    <div class="text-[#ffd100] bg-[#16141a] px-3 py-1 rounded border border-[#2d241b] min-w-16.25 text-center flex items-center justify-center gap-1">
-      <span>⏱</span>
-      <span>{{ timer() | counter }}</span>
-    </div>
-  </div>
+      <!-- CARITA RESET -->
+      <div #redirect class="cursor-pointer">
+        <label class="swap swap-flip text-3xl cursor-pointer" (click)="resetGame($event)">
+          <input type="checkbox" [checked]="isGameOver() || victory()"/>
+          <div class="swap-on flex items-center justify-center p-1">
+            @if (victory()) {
+              <img
+                src="assets/images/icon_cool.png"
+                alt="Victory"
+                class="w-8 h-8 object-contain"
+              />
+            } @else {
+              <img
+                src="assets/images/frame.png"
+                alt="GameOver"
+                class="w-8 h-8 object-contain"
+              />
+            }
+          </div>
+          <div class="swap-off flex items-center justify-center p-1">
+            <img
+              src="assets/images/icon_smile.png"
+              alt="Normal"
+              class="w-8 h-8 object-contain"
+            />
+          </div>
+        </label>
+      </div>
 
-  @for (row of board(); track $index) {
-    <div class="flex gap-1 w-max">
-      @for (box of row; track (box.row + '-' + box.column)) {
+      <!-- BOTÓN REGENERAR TABLERO RANDOM -->
+      @if (isRandomGame()) {
         <button
-          (click)="revealBox(box.row, box.column)"
-          (contextmenu)="flagBox($event, box.row, box.column)"
-          class="flex-shrink-0 font-bold text-xs sm:text-sm flex items-center justify-center rounded transition-all duration-100 select-none w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10
-          {{ box.isRevealed
-             ? box.hasMine
-               ? 'bg-red-950/80 text-red-500 border border-red-500/50 cursor-default shadow-[inset_0_0_8px_rgba(239,68,68,0.4)]'
-               : 'bg-[#18161f] text-zinc-200 border border-[#282333]/60 cursor-default shadow-[inset_0_1px_3px_rgba(0,0,0,0.8)]'
-             : box.isFlagged
-               ? 'bg-blue-500/10 border border-blue-500/40 btn btn-square min-h-0 !h-inherit !w-inherit hover:scale-95 cursor-pointer'
-               : 'bg-[#0a090c] border border-[#201a26] hover:bg-[#16131c] hover:border-[#3d3347] btn btn-square min-h-0 !h-inherit !w-inherit hover:scale-95 cursor-pointer'
-          }}">
-          @if (box.isRevealed) {
-            @if (box.hasMine) {
-              <div class="flex items-center justify-center w-full h-full p-0.5 min-w-0 overflow-hidden">
-                <img
-                  src="assets/images/MINESWEEPER_M.png"
-                  alt="BombFound"
-                  class="w-full h-full max-w-[24px] aspect-square object-contain"
-                />
-              </div>
-            } @else if (box.minesAround > 0) {
-              <span class="{{ gameConfigService.getNumberColor(box.minesAround) }}">
-                {{ box.minesAround }}
-              </span>
-            }
-          } @else {
-            @if (box.isFlagged) {
-              <div class="flex items-start h-6 select-none scale-75 sm:scale-100">
-                <div class="w-0.75 h-full bg-amber-700 rounded-t shadow-sm"></div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  class="w-5 h-3.5 object-cover rounded-sm shadow border border-black/10 -ml-px mt-px bg-white p-0.5"
-                >
-                  <path
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2.5"
-                    class="text-neutral"
-                    d="M5 12h14m0 0v-5m0 5v5M5 12V7m0 5v5M5 7h5m9 10h-5"
-                  />
-                </svg>
-              </div>
-            }
-          }
+          type="button"
+          class="btn btn-ghost btn-sm btn-square text-base-content hover:text-primary hover:bg-base-200 cursor-pointer"
+          (click)="updateRandomBoard()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+          </svg>
         </button>
       }
+
+      <!-- TEMPORIZADOR -->
+      <div class="text-primary bg-base-200 px-3 py-1 rounded border border-base-300 min-w-16.25 text-center flex items-center justify-center gap-1">
+        <span>⏱</span>
+        <span>{{ timer() | counter }}</span>
+      </div>
     </div>
+
+    <!-- TABLERO DE JUEGO -->
+    @for (row of board(); track $index) {
+      <div class="flex gap-1 w-max">
+        @for (box of row; track (box.row + '-' + box.column)) {
+          <button
+            (click)="revealBox(box.row, box.column)"
+            (contextmenu)="flagBox($event, box.row, box.column)"
+            class="flex-shrink-0 font-bold text-xs sm:text-sm flex items-center justify-center rounded transition-all duration-100 select-none w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10
+            {{ box.isRevealed
+               ? box.hasMine
+                 ? 'bg-error/30 text-error border border-error/50 cursor-default shadow-[inset_0_0_8px_rgba(239,68,68,0.4)]'
+                 : 'bg-base-200 text-base-content border border-base-300 cursor-default shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]'
+               : box.isFlagged
+                 ? 'bg-info/20 border border-info/50 btn btn-square min-h-0 !h-inherit !w-inherit hover:scale-95 cursor-pointer'
+                 : 'bg-base-300 border border-base-300 hover:border-primary btn btn-square min-h-0 !h-inherit !w-inherit hover:scale-95 cursor-pointer'
+            }}">
+            @if (box.isRevealed) {
+              @if (box.hasMine) {
+                <div class="flex items-center justify-center w-full h-full p-0.5 min-w-0 overflow-hidden">
+                  <img
+                    src="assets/images/MINESWEEPER_M.png"
+                    alt="BombFound"
+                    class="w-full h-full max-w-[24px] aspect-square object-contain"
+                  />
+                </div>
+              } @else if (box.minesAround > 0) {
+                <span class="{{ gameConfigService.getNumberColor(box.minesAround) }}">
+                  {{ box.minesAround }}
+                </span>
+              }
+            } @else {
+              @if (box.isFlagged) {
+                <div class="flex items-start h-6 select-none scale-75 sm:scale-100">
+                  <div class="w-0.75 h-full bg-amber-700 rounded-t shadow-sm"></div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    class="w-5 h-3.5 object-cover rounded-sm shadow border border-black/10 -ml-px mt-px bg-white p-0.5"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2.5"
+                      class="text-neutral"
+                      d="M5 12h14m0 0v-5m0 5v5M5 12V7m0 5v5M5 7h5m9 10h-5"
+                    />
+                  </svg>
+                </div>
+              }
+            }
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  @if (showAd()) {
+    <app-detonation-cancel
+      [revertCount]="revertCount()"
+      [revertLimit]="gameSettings().revertLimit"
+      (isExplosionCanceled)="resumeGame($event)"/>
   }
 </div>
-
-@if (showAd()) {
-  <app-detonation-cancel
-    [revertCount]="revertCount()"
-    [revertLimit]="gameSettings().revertLimit"
-    (isExplosionCanceled)="resumeGame($event)"/>
-}

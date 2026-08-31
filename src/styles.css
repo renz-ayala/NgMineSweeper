@@ -1,3 +1,50 @@
-/* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+  themes: sunset, light, nord, emerald, dark, retro, cyberpunk, valentine, aqua;
+}
+
+/* 1. TEMA DEFAULT (Tu interfaz Warcraft original exacta) */
+@plugin "daisyui/theme" {
+  name: "default";
+  default: true;
+  --color-primary: #ffd100;           /* Dorado Warcraft */
+  --color-primary-content: #000000;
+  --color-base-100: #0b0a0d;          /* Fondo de tarjetas / contenedor */
+  --color-base-200: #121015;          /* Fondo de paneles */
+  --color-base-300: #070608;          /* Fondo global muy oscuro */
+  --color-base-content: #a335ee;      /* Morado épico para los textos de dificultad */
+  --color-error: #7f0000;             /* Rojo del botón de instancia */
+  --color-error-content: #ffd100;
+}
+
+/* 2. TEMA BLIZZARD (Battle.net) */
+@plugin "daisyui/theme" {
+  name: "blizzard";
+  --color-primary: #0074e4;           /* Azul Battle.net */
+  --color-primary-content: #ffffff;
+  --color-base-100: #151922;
+  --color-base-200: #1a1e29;
+  --color-base-300: #0e1015;
+  --color-base-content: #f3f4f6;
+  --color-error: #0074e4;
+  --color-error-content: #ffffff;
+}
+
+/* Bordes y detalles del tema Warcraft */
+[data-theme="default"] .border-base-300 {
+  border-color: #2b231a !important;
+}
+
+[data-theme="default"] .btn-error {
+  background: linear-gradient(180deg, #7f0000 0%, #3a0000 100%) !important;
+  border: 2px solid #571212 !important;
+  color: #ffd100 !important;
+}
+
+html, body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+}
