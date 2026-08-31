@@ -3,10 +3,8 @@
 
   <div class="flex flex-col gap-1 bg-base-100 p-4 rounded-xl shadow-2xl border-2 border-base-300 w-fit mx-auto max-w-full overflow-x-auto select-none font-mono">
 
-    <!-- HEADER DEL JUEGO -->
     <div class="flex items-center justify-between w-full px-1 py-2 font-mono font-bold text-xl select-none mb-2 gap-2">
 
-      <!-- CONTADOR DE MINAS -->
       <div class="text-error bg-base-200 px-3.5 py-1.5 rounded border border-base-300 min-w-[100px] text-center flex items-center justify-center gap-2.5">
         <img
           src="assets/images/Bomb_anim0001.png"
@@ -16,7 +14,6 @@
         <span class="text-lg font-bold font-mono">{{ minesLeft() | counter }}</span>
       </div>
 
-      <!-- BOTÓN VOLVER -->
       <button
         type="button"
         class="btn btn-ghost btn-sm btn-square text-base-content hover:text-primary hover:bg-base-200 cursor-pointer"
@@ -26,7 +23,6 @@
         </svg>
       </button>
 
-      <!-- CARITA RESET -->
       <div #redirect class="cursor-pointer">
         <label class="swap swap-flip text-3xl cursor-pointer" (click)="resetGame($event)">
           <input type="checkbox" [checked]="isGameOver() || victory()"/>
@@ -55,7 +51,6 @@
         </label>
       </div>
 
-      <!-- BOTÓN REGENERAR TABLERO RANDOM -->
       @if (isRandomGame()) {
         <button
           type="button"
@@ -67,14 +62,12 @@
         </button>
       }
 
-      <!-- TEMPORIZADOR -->
       <div class="text-primary bg-base-200 px-3 py-1 rounded border border-base-300 min-w-16.25 text-center flex items-center justify-center gap-1">
         <span>⏱</span>
         <span>{{ timer() | counter }}</span>
       </div>
     </div>
 
-    <!-- TABLERO DE JUEGO -->
     @for (row of board(); track $index) {
       <div class="flex gap-1 w-max">
         @for (box of row; track (box.row + '-' + box.column)) {
@@ -82,14 +75,14 @@
             (click)="revealBox(box.row, box.column)"
             (contextmenu)="flagBox($event, box.row, box.column)"
             class="flex-shrink-0 font-bold text-xs sm:text-sm flex items-center justify-center rounded transition-all duration-100 select-none w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10
-            {{ box.isRevealed
-               ? box.hasMine
-                 ? 'bg-error/30 text-error border border-error/50 cursor-default shadow-[inset_0_0_8px_rgba(239,68,68,0.4)]'
-                 : 'bg-base-200 text-base-content border border-base-300 cursor-default shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]'
-               : box.isFlagged
-                 ? 'bg-info/20 border border-info/50 btn btn-square min-h-0 !h-inherit !w-inherit hover:scale-95 cursor-pointer'
-                 : 'bg-base-300 border border-base-300 hover:border-primary btn btn-square min-h-0 !h-inherit !w-inherit hover:scale-95 cursor-pointer'
-            }}">
+        {{ box.isRevealed
+           ? box.hasMine
+             ? 'bg-error/20 text-error border border-error/50 cursor-default'
+             : 'bg-base-200/60 text-base-content border border-base-content/5 cursor-default'
+           : box.isFlagged
+             ? 'bg-base-300 border border-base-300 btn btn-square min-h-0 !h-inherit !w-inherit hover:scale-95 cursor-pointer'
+             : 'bg-base-300 border border-base-300 hover:border-primary btn btn-square min-h-0 !h-inherit !w-inherit hover:scale-95 cursor-pointer'
+        }}">
             @if (box.isRevealed) {
               @if (box.hasMine) {
                 <div class="flex items-center justify-center w-full h-full p-0.5 min-w-0 overflow-hidden">
@@ -101,27 +94,27 @@
                 </div>
               } @else if (box.minesAround > 0) {
                 <span class="{{ gameConfigService.getNumberColor(box.minesAround) }}">
-                  {{ box.minesAround }}
-                </span>
+              {{ box.minesAround }}
+            </span>
               }
             } @else {
               @if (box.isFlagged) {
-                <div class="flex items-start h-6 select-none scale-75 sm:scale-100">
-                  <div class="w-0.75 h-full bg-amber-700 rounded-t shadow-sm"></div>
+                <div class="flex items-center justify-center w-full h-full p-1">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    class="w-5 h-3.5 object-cover rounded-sm shadow border border-black/10 -ml-px mt-px bg-white p-0.5"
+                    class="w-6 h-6 text-neutral-content"
                   >
-                    <path
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2.5"
-                      class="text-neutral"
-                      d="M5 12h14m0 0v-5m0 5v5M5 12V7m0 5v5M5 7h5m9 10h-5"
-                    />
+                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" fill="#ffffff" stroke="#d1d5db" stroke-width="0.8"/>
+
+                    <line x1="4" x2="4" y1="22" y2="15" stroke="#78350f" stroke-width="2" stroke-linecap="round" />
+
+                    <g transform="translate(8.8, 6.8) scale(0.45)">
+                      <path
+                        fill="#111827"
+                        d="M4 0h4v4h4v4h-4v4h-4v-4h-4v-4h4z M12 4h4v4h-4z M0 12h4v4h4v-4h4v4h-4v4h-4v-4h-4z M12 12h4v4h-4z"
+                      />
+                    </g>
                   </svg>
                 </div>
               }

@@ -4,24 +4,22 @@
   themes: sunset, light, nord, emerald, dark, retro, cyberpunk, valentine, aqua;
 }
 
-/* 1. TEMA DEFAULT (Tu interfaz Warcraft original exacta) */
 @plugin "daisyui/theme" {
   name: "default";
   default: true;
-  --color-primary: #ffd100;           /* Dorado Warcraft */
+  --color-primary: #ffd100;
   --color-primary-content: #000000;
-  --color-base-100: #0b0a0d;          /* Fondo de tarjetas / contenedor */
-  --color-base-200: #121015;          /* Fondo de paneles */
-  --color-base-300: #070608;          /* Fondo global muy oscuro */
-  --color-base-content: #a335ee;      /* Morado épico para los textos de dificultad */
-  --color-error: #7f0000;             /* Rojo del botón de instancia */
+  --color-base-100: #0b0a0d;
+  --color-base-200: #121015;
+  --color-base-300: #070608;
+  --color-base-content: #a335ee;
+  --color-error: #7f0000;
   --color-error-content: #ffd100;
 }
 
-/* 2. TEMA BLIZZARD (Battle.net) */
 @plugin "daisyui/theme" {
   name: "blizzard";
-  --color-primary: #0074e4;           /* Azul Battle.net */
+  --color-primary: #0074e4;
   --color-primary-content: #ffffff;
   --color-base-100: #151922;
   --color-base-200: #1a1e29;
@@ -31,7 +29,6 @@
   --color-error-content: #ffffff;
 }
 
-/* Bordes y detalles del tema Warcraft */
 [data-theme="default"] .border-base-300 {
   border-color: #2b231a !important;
 }
