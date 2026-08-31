@@ -1,93 +1,96 @@
-<div class="min-h-screen w-full flex items-center justify-center bg-zinc-950 p-4 select-none font-sans">
-  <div class="w-full max-w-4xl bg-[#0b0a0d] border-2 border-[#43382b] rounded-md shadow-[0_0_30px_rgba(0,0,0,0.95),inset_0_0_15px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col">
-    <header class="bg-gradient-to-r from-[#141217] via-[#241e17] to-[#141217] border-b-2 border-[#382e22] px-3 py-2 flex items-center justify-between relative z-10 shadow-md">
+<div class="min-h-screen w-full flex items-center justify-center bg-base-300 p-4 select-none font-sans">
+  <div class="w-full max-w-4xl bg-base-100 border-2 border-base-300 rounded-md shadow-2xl overflow-hidden flex flex-col">
+    <header class="bg-base-200 border-b-2 border-base-300 px-3 py-2 flex items-center justify-between relative z-10 shadow-md">
 
       <div class="flex items-center gap-3">
-        <div class="relative w-8 h-8 min-w-[32px] rounded-full bg-[#050505] border-2 border-[#ffd100] shadow-[0_0_10px_#22c55e] flex items-center justify-center overflow-hidden">
-          <img
-            src="assets/images/eye_of_sender.png"
-            alt="Eye"
-            class="w-full h-full object-cover"
-          />
+        <div class="relative w-8 h-8 min-w-[32px] rounded-full bg-base-300 border-2 border-primary shadow-sm flex items-center justify-center overflow-hidden">
+          <img src="assets/images/eye_of_sender.png" alt="Eye" class="w-full h-full object-cover" />
         </div>
 
-        <h1 class="text-2xl sm:text-3xl font-black tracking-wide [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_0_2px_4px_rgba(0,0,0,0.9)] select-none">
-          <span class="text-zinc-400">{{ languageService.i18n().appNamePrefix }}</span>
-          <span class="text-[#ffd100]">{{ languageService.i18n().appNameSuffix }}</span>
+        <h1 class="text-2xl sm:text-3xl font-black tracking-wide select-none">
+          <span class="text-zinc-400 [text-shadow:_1px_1px_0_#000]">{{ languageService.i18n().appNamePrefix }}</span>
+          <span class="text-primary [text-shadow:_1px_1px_0_#000]">{{ languageService.i18n().appNameSuffix }}</span>
         </h1>
       </div>
 
-      <button
-        type="button"
-        (click)="languageService.toggleLanguage()"
-        class="ml-auto relative flex items-center bg-[#070608] border-2 border-[#3a2e22] hover:border-[#a38038] p-0.5 rounded-sm shadow-[inset_0_2px_4px_rgba(0,0,0,0.9)] cursor-pointer transition-all duration-200 select-none group">
-        <span
-          [class.text-[#ffd100]]="languageService.currentLang() === 'en'"
-          [class.bg-gradient-to-b]="languageService.currentLang() === 'en'"
-          [class.from-[#261f14]]="languageService.currentLang() === 'en'"
-          [class.to-[#0f0c08]]="languageService.currentLang() === 'en'"
-          [class.border-[#ffd100]]="languageService.currentLang() === 'en'"
-          [class.shadow-[0_0_8px_rgba(255,209,0,0.3)]]="languageService.currentLang() === 'en'"
-          [class.text-zinc-500]="languageService.currentLang() !== 'en'"
-          [class.border-transparent]="languageService.currentLang() !== 'en'"
-          class="px-2 py-0.5 text-[10px] font-extrabold font-mono tracking-wider border rounded-xs transition-all duration-200 [text-shadow:_1px_1px_0_#000]">
-          EN
-        </span>
-        <span
-          [class.text-[#ffd100]]="languageService.currentLang() === 'es'"
-          [class.bg-gradient-to-b]="languageService.currentLang() === 'es'"
-          [class.from-[#261f14]]="languageService.currentLang() === 'es'"
-          [class.to-[#0f0c08]]="languageService.currentLang() === 'es'"
-          [class.border-[#ffd100]]="languageService.currentLang() === 'es'"
-          [class.shadow-[0_0_8px_rgba(255,209,0,0.3)]]="languageService.currentLang() === 'es'"
-          [class.text-zinc-500]="languageService.currentLang() !== 'es'"
-          [class.border-transparent]="languageService.currentLang() !== 'es'"
-          class="px-2 py-0.5 text-[10px] font-extrabold font-mono tracking-wider border rounded-xs transition-all duration-200 [text-shadow:_1px_1px_0_#000]">
-          ES
-        </span>
-      </button>
+      <div class="ml-auto flex items-center gap-2">
+
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-xs btn-outline btn-primary font-mono uppercase">
+            <span>{{ themeService.currentTheme() }}</span>
+            <span class="text-[10px]">▼</span>
+          </div>
+
+          <ul tabindex="0" class="dropdown-content menu z-[50] p-1 shadow-2xl bg-base-200 border border-base-300 rounded-md w-36 mt-1 gap-1">
+            @for (theme of themeService.themes; track theme.id) {
+              <li>
+                <button
+                  type="button"
+                  (click)="themeService.setTheme(theme.id)"
+                  [class.active]="themeService.currentTheme() === theme.id"
+                  class="text-xs font-mono rounded-xs px-2 py-1.5 transition-colors">
+                  {{ theme.label }}
+                </button>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <button
+          type="button"
+          (click)="languageService.toggleLanguage()"
+          class="flex items-center bg-base-300 border border-base-300 p-0.5 rounded-sm cursor-pointer select-none">
+          <span
+            [class.bg-primary]="languageService.currentLang() === 'en'"
+            [class.text-primary-content]="languageService.currentLang() === 'en'"
+            [class.opacity-50]="languageService.currentLang() !== 'en'"
+            class="px-2 py-0.5 text-[10px] font-extrabold font-mono tracking-wider rounded-xs transition-all">
+            EN
+          </span>
+          <span
+            [class.bg-primary]="languageService.currentLang() === 'es'"
+            [class.text-primary-content]="languageService.currentLang() === 'es'"
+            [class.opacity-50]="languageService.currentLang() !== 'es'"
+            class="px-2 py-0.5 text-[10px] font-extrabold font-mono tracking-wider rounded-xs transition-all">
+            ES
+          </span>
+        </button>
+
+      </div>
     </header>
 
-    <div class="grid grid-cols-12 min-h-[380px] bg-[#070608]">
+    <div class="grid grid-cols-12 min-h-[380px] bg-base-100">
 
-      <nav class="col-span-12 sm:col-span-7 p-3 border-r-2 border-[#261f18] bg-[#0d0b0f] flex flex-col gap-2 overflow-y-auto max-h-[400px]">
+      <nav class="col-span-12 sm:col-span-7 p-3 border-r-2 border-base-300 bg-base-200 flex flex-col gap-2 overflow-y-auto max-h-[400px]">
         @for (difficulty of gameConfigService.difficulties; track difficulty.level) {
           <button
             type="button"
             (click)="selectDifficulty(difficulty)"
-            [class.border-[#ffd100]]="selectedDifficulty().level === difficulty.level"
-            [class.bg-gradient-to-r]="selectedDifficulty().level === difficulty.level"
-            [class.from-[#261f14]]="selectedDifficulty().level === difficulty.level"
-            [class.to-[#120e09]]="selectedDifficulty().level === difficulty.level"
-            [class.shadow-[0_0_10px_rgba(255,209,0,0.25)]]="selectedDifficulty().level === difficulty.level"
-            [class.border-[#2b231a]]="selectedDifficulty().level !== difficulty.level"
-            [class.bg-[#121015]]="selectedDifficulty().level !== difficulty.level"
-            class="group w-full flex items-center justify-between p-3 border-2 rounded-sm transition-all text-left cursor-pointer hover:border-[#a38038]">
+            [class.border-primary]="selectedDifficulty().level === difficulty.level"
+            [class.bg-base-300]="selectedDifficulty().level === difficulty.level"
+            [class.border-base-300]="selectedDifficulty().level !== difficulty.level"
+            [class.bg-base-100]="selectedDifficulty().level !== difficulty.level"
+            class="group w-full flex items-center justify-between p-3 border-2 rounded-sm transition-all text-left cursor-pointer hover:border-primary">
 
             <div class="flex items-center gap-3">
               <div
                 class="w-3 h-3 rotate-45 border transition-all"
-                [class.bg-[#ffd100]]="selectedDifficulty().level === difficulty.level"
-                [class.border-white]="selectedDifficulty().level === difficulty.level"
-                [class.bg-zinc-800]="selectedDifficulty().level !== difficulty.level"
-                [class.border-zinc-600]="selectedDifficulty().level !== difficulty.level">
+                [class.bg-primary]="selectedDifficulty().level === difficulty.level"
+                [class.border-primary-content]="selectedDifficulty().level === difficulty.level"
+                [class.bg-base-300]="selectedDifficulty().level !== difficulty.level"
+                [class.border-base-300]="selectedDifficulty().level !== difficulty.level">
               </div>
 
               <div class="flex flex-col">
-                <span
-                  class="font-bold text-xs tracking-wide uppercase text-[#a335ee] [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_0_2px_4px_rgba(0,0,0,0.9)]">
+                <span class="font-bold text-xs tracking-wide uppercase text-base-content [text-shadow:_1px_1px_0_#000]">
                   {{ difficulty.level }}
                 </span>
               </div>
             </div>
 
-            <div class="flex items-center gap-1 bg-[#050506] px-2.5 py-1 border border-[#382e22] rounded-sm">
-              <img
-                src="assets/images/dynamite.png"
-                alt="dynamite"
-                class="w-3.5 h-3.5 object-contain"
-              />
-              <span class="text-xs font-mono font-bold text-[#f84d4d] [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_0_2px_4px_rgba(0,0,0,0.9)]">
+            <div class="flex items-center gap-1 bg-base-300 px-2.5 py-1 border border-base-300 rounded-sm">
+              <img src="assets/images/dynamite.png" alt="dynamite" class="w-3.5 h-3.5 object-contain" />
+              <span class="text-xs font-mono font-bold text-error">
                 {{ difficulty.mines }}
               </span>
             </div>
@@ -95,32 +98,28 @@
         }
       </nav>
 
-      <main class="col-span-12 sm:col-span-5 p-5 bg-gradient-to-b from-[#121015] to-[#070608] flex flex-col justify-between items-center text-center">
-        <div class="w-full my-auto p-4 bg-[#09080b] border border-[#2b231a] rounded-sm shadow-[inset_0_0_12px_rgba(0,0,0,0.9)] flex flex-col items-center gap-3">
-          <div class="w-16 h-16 rounded-full bg-gradient-to-b from-[#261f14] to-[#080709] border-2 border-[#ffd100] flex items-center justify-center text-2xl shadow-[0_0_15px_rgba(255,209,0,0.2)]">
-            <img
-              src="assets/images/crossed_swords.png"
-              alt="Dificultty"
-              class="w-full h-full object-contain"
-            />
+      <main class="col-span-12 sm:col-span-5 p-5 bg-base-100 flex flex-col justify-between items-center text-center">
+        <div class="w-full my-auto p-4 bg-base-200 border border-base-300 rounded-sm flex flex-col items-center gap-3">
+          <div class="w-16 h-16 rounded-full bg-base-300 border-2 border-primary flex items-center justify-center text-2xl shadow-md">
+            <img src="assets/images/crossed_swords.png" alt="Difficulty" class="w-full h-full object-contain p-1" />
           </div>
 
           <div>
-            <h2 class="text-base font-bold text-[#ffd100] tracking-wider uppercase [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_0_2px_4px_rgba(0,0,0,0.9)]">
+            <h2 class="text-base font-bold text-primary tracking-wider uppercase [text-shadow:_1px_1px_0_#000]">
               {{ selectedDifficulty().level }}
             </h2>
-            <p class="text-xs text-[#c7b38d] mt-1 [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_0_2px_4px_rgba(0,0,0,0.9)]">
+            <p class="text-xs opacity-80 mt-1">
               {{ gameConfigService.getDifficultDescription(selectedDifficulty().level) }}
             </p>
           </div>
         </div>
 
-        <div class="w-full pt-3 border-t border-[#261f18]">
+        <div class="w-full pt-3 border-t border-base-300">
           <button
             type="button"
             (click)="startGame()"
             style="font-family: 'Philosopher', sans-serif;"
-            class="w-full py-2 bg-gradient-to-b from-[#7f0000] via-[#520000] to-[#260000] hover:from-[#990000] hover:to-[#380000] border-[3px] border-[#4a4a4a] rounded-md text-[#ffd100] text-lg tracking-normal shadow-[inset_0_1px_2px_rgba(255,255,255,0.2),inset_0_-2px_4px_rgba(0,0,0,0.9),0_2px_4px_rgba(0,0,0,0.8)] [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000] active:translate-y-0.5 transition-all cursor-pointer">
+            class="btn btn-error w-full text-lg tracking-normal cursor-pointer">
             {{ languageService.i18n().enterInstance }}
           </button>
         </div>
@@ -129,14 +128,14 @@
 
     </div>
 
-    <footer class="bg-[#070608] border-t-2 border-[#382e22] px-4 py-1.5 flex items-center justify-between text-[10px] text-[#8a7343] [text-shadow:_1px_1px_0_#000,_-1px_-1px_0_#000,_1px_-1px_0_#000,_-1px_1px_0_#000,_0_2px_4px_rgba(0,0,0,0.9)]">
+    <footer class="bg-base-200 border-t-2 border-base-300 px-4 py-2 flex items-center justify-between text-[10px] text-amber-200/60">
       <span>{{ languageService.i18n().density }}: {{ density() | percent}}</span>
       <span>{{ languageService.i18n().bestScore }}: {{ bestScore() }}</span>
       <span>{{ languageService.i18n().bestTime }}: {{ bestTime() | time}}</span>
       <button
         type="button"
         (click)="openCredits()"
-        class="hover:text-[#ffd100] transition-colors underline cursor-pointer">
+        class="hover:text-primary transition-colors underline cursor-pointer">
         📜 {{ languageService.i18n().credits }}
       </button>
     </footer>

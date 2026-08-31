@@ -6,6 +6,7 @@ import { TimePipe } from '../../../shared/pipes/time-pipe';
 import { LanguageService } from '../../../core/services/language-service';
 import { SoundService } from '../../../core/services/sound-service';
 import { Credits } from '../../../shared/components/credits/credits';
+import { ThemeService } from '../../../core/services/theme-service';
 
 @Component({
   selector: 'app-menu',
@@ -17,6 +18,7 @@ export class Menu {
   gameConfigService = inject(GameConfigService);
   languageService = inject(LanguageService);
   soundService = inject(SoundService);
+  themeService = inject(ThemeService);
 
   selectedDifficulty = signal<Difficulty>(this.gameConfigService.difficulties[0]);
   showCreditsModal = signal(false);

@@ -82,16 +82,16 @@ export class GameConfigService {
 
   getNumberColor(minesAround: number): string {
     const colors: Record<number, string> = {
-      1: 'text-info font-extrabold',
-      2: 'text-success font-extrabold',
-      3: 'text-error font-black text-sm',
-      4: 'text-secondary font-black text-sm',
-      5: 'text-neutral-content bg-neutral p-0.5 rounded',
-      6: 'text-error bg-error/20 p-0.5 rounded font-black',
-      7: 'text-error bg-error/30 p-0.5 rounded font-black uppercase tracking-tighter',
-      8: 'text-black bg-red-600 px-1 rounded font-black text-center',
+      1: 'text-sky-400 font-extrabold',
+      2: 'text-emerald-400 font-extrabold',
+      3: 'text-rose-500 font-black text-sm',
+      4: 'text-purple-400 font-black text-sm',
+      5: 'text-amber-400 font-black text-sm',
+      6: 'text-teal-300 font-black text-sm',
+      7: 'text-pink-400 font-black text-sm',
+      8: 'text-zinc-300 font-black text-sm',
     };
-    return colors[minesAround] || 'text-base-content';
+    return colors[minesAround] || 'text-zinc-200';
   }
 
   calcScore(rows: number, cols: number, mines: number, time: number, isLoss: boolean): number {
