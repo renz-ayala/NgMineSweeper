@@ -1,3 +1,47 @@
-/* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+  themes: sunset, light, nord, emerald, dark, retro, cyberpunk, valentine, aqua;
+}
+
+@plugin "daisyui/theme" {
+  name: "default";
+  default: true;
+  --color-primary: #ffd100;
+  --color-primary-content: #000000;
+  --color-base-100: #0b0a0d;
+  --color-base-200: #121015;
+  --color-base-300: #070608;
+  --color-base-content: #a335ee;
+  --color-error: #7f0000;
+  --color-error-content: #ffd100;
+}
+
+@plugin "daisyui/theme" {
+  name: "blizzard";
+  --color-primary: #0074e4;
+  --color-primary-content: #ffffff;
+  --color-base-100: #151922;
+  --color-base-200: #1a1e29;
+  --color-base-300: #0e1015;
+  --color-base-content: #f3f4f6;
+  --color-error: #0074e4;
+  --color-error-content: #ffffff;
+}
+
+[data-theme="default"] .border-base-300 {
+  border-color: #2b231a !important;
+}
+
+[data-theme="default"] .btn-error {
+  background: linear-gradient(180deg, #7f0000 0%, #3a0000 100%) !important;
+  border: 2px solid #571212 !important;
+  color: #ffd100 !important;
+}
+
+html, body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+}
