@@ -342,7 +342,7 @@ export class Game implements OnInit {
 
   resetGame(event: MouseEvent) {
     event.preventDefault();
-    
+
     if (!this.isGameStarted()) {
       return;
     }
