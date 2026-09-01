@@ -1,5 +1,4 @@
 import { Component, computed, inject, input, output } from '@angular/core';
-import { SoundService } from '../../../core/services/sound-service';
 import { LanguageService } from '../../../core/services/language-service';
 
 @Component({
@@ -12,19 +11,29 @@ export class DetonationCancel {
   revertCount = input.required<number>();
   revertLimit = input.required<number>();
 
-  soundService = inject(SoundService);
   langService = inject(LanguageService);
 
   revertCountPlus = computed(() => this.revertCount() + 1);
 
   confirmExplosion() {
-    this.soundService.playSound('click');
     this.isExplosionCanceled.emit(false);
   }
 
   cancelExplosion() {
-    this.soundService.playSound('click');
-    this.isExplosionCanceled.emit(true);
+    const crazySdk = (window as any).CrazyGames?.SDK;
+
+    if (crazySdk?.ad) {
+      crazySdk.ad.requestAd('rewarded', {
+        adFinished: () => {
+          this.isExplosionCanceled.emit(true);
+        },
+        adError: () => {
+          this.isExplosionCanceled.emit(false);
+        },
+      });
+    } else {
+      this.isExplosionCanceled.emit(true);
+    }
   }
 }
 

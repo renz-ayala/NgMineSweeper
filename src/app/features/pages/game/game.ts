@@ -111,6 +111,8 @@ export class Game implements OnInit {
             `${this.langService.i18n().newRecord} ${formattedTimer}`,
           );
         }
+
+        (window as any).CrazyGames?.SDK?.game?.gameplayStop();
       }
     });
 
@@ -120,6 +122,7 @@ export class Game implements OnInit {
         const lossMessage = this.getEndGameMessage();
         this.alertService.show(lossMessage, 'error');
         this.redirect();
+        (window as any).CrazyGames?.SDK?.game?.gameplayStop();
       }
     });
 
@@ -185,6 +188,7 @@ export class Game implements OnInit {
     if (!this.isGameStarted()) {
       this.putMines(rowIndex, columnIndex);
       this.isGameStarted.set(true);
+      (window as any).CrazyGames?.SDK?.game?.gameplayStart();
     }
     this.board.update((updatedBoard) => {
       const box = updatedBoard[rowIndex][columnIndex];
@@ -338,12 +342,25 @@ export class Game implements OnInit {
 
   resetGame(event: MouseEvent) {
     event.preventDefault();
+    
     if (!this.isGameStarted()) {
       return;
     }
 
-    this.soundService.setMuted(true);
-    this.resetState();
+    const crazySdk = (window as any).CrazyGames?.SDK;
+
+    if (crazySdk?.ad) {
+      crazySdk.ad.requestAd('midgame', {
+        adFinished: () => {
+          this.resetState();
+        },
+        adError: () => {
+          this.resetState();
+        },
+      });
+    } else {
+      this.resetState();
+    }
   }
 
   updateRandomBoard(): void {

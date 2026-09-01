@@ -46,5 +46,4 @@ export class SoundService {
     this.isMuted.set(!this.isMuted());
     return this.isMuted();
   }
-
 }
